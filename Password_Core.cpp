@@ -540,7 +540,7 @@ PasswordAnalysis analyzePassword(
         if (result.sequential) result.entropyBits *= 0.6;
         if (result.spatialKeyboard) result.entropyBits *= 0.6;
         if (result.repeatedPattern) result.entropyBits *= 0.7;
-        if (result.birthdateLike) result.entropyBits = min(result.entropyBits, 20.0);
+        if (result.birthdateLike) result.entropyBits = min(result.entropyBits, 15.18);
     }
 
     result.score = calculateModernScore(result.entropyBits, result.isBreached);
@@ -602,7 +602,7 @@ static string jsonEscape(const string& s) {
 }
 
 extern "C" {
-    const char* analyze_password_json(const char* input) {
+    const char* analyze_password_json(const char* input, double onlineSpeed, double gpuSpeed) {
         static string output;
 
         static BloomFilter breachDB = buildBreachDB();
@@ -611,8 +611,11 @@ extern "C" {
         string password = input ? string(input) : "";
         PasswordAnalysis result = analyzePassword(password, breachDB, dictionary);
 
-        auto online = estimateCrackTimeLogSpace(result.entropyBits, 1e3L);
-        auto gpu = estimateCrackTimeLogSpace(result.entropyBits, 1e11L);
+        long double safeOnlineSpeed = (onlineSpeed > 0.0) ? static_cast<long double>(onlineSpeed) : 1e3L;
+        long double safeGpuSpeed = (gpuSpeed > 0.0) ? static_cast<long double>(gpuSpeed) : 1e11L;
+
+        auto online = estimateCrackTimeLogSpace(result.entropyBits, safeOnlineSpeed);
+        auto gpu = estimateCrackTimeLogSpace(result.entropyBits, safeGpuSpeed);
 
         ostringstream out;
         out << "{";
