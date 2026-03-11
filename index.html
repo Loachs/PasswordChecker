@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Strength Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 20px;
+      background: #f7f7f7;
+      color: #111;
+    }
+
+    .box {
+      background: white;
+      padding: 24px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .small {
+      margin-top: 10px;
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Password Strength Tester</h1>
+    <p>Type a password below to test its strength locally in your browser.</p>
+
+    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <div class="result" id="result">Strength: —</div>
+    <div class="small" id="details">Entropy estimate will appear here.</div>
+  </div>
+
+  <script>
+    function calculateStrength(password) {
+      let hasLower = /[a-z]/.test(password);
+      let hasUpper = /[A-Z]/.test(password);
+      let hasDigit = /[0-9]/.test(password);
+      let hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+      let pool = 0;
+      if (hasLower) pool += 26;
+      if (hasUpper) pool += 26;
+      if (hasDigit) pool += 10;
+      if (hasSpecial) pool += 33;
+
+      if (password.length === 0 || pool === 0) {
+        return { label: "—", entropy: 0 };
+      }
+
+      let entropy = password.length * Math.log2(pool);
+
+      let label = "Weak";
+      if (entropy >= 40) label = "Moderate";
+      if (entropy >= 60) label = "Strong";
+      if (entropy >= 80) label = "Very Strong";
+
+      return { label, entropy: entropy.toFixed(2) };
+    }
+
+    const input = document.getElementById("passwordInput");
+    const result = document.getElementById("result");
+    const details = document.getElementById("details");
+
+    input.addEventListener("input", () => {
+      const password = input.value;
+      const data = calculateStrength(password);
+      result.textContent = `Strength: ${data.label}`;
+      details.textContent = `Estimated entropy: ${data.entropy} bits`;
+    });
+  </script>
+</body>
+</html>
