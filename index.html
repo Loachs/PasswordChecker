@@ -5,82 +5,252 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Password Strength Tester</title>
   <style>
+    :root {
+      --primary: #2563eb;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border: #d1d5db;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 700px;
       margin: 60px auto;
       padding: 20px;
-      background: #f7f7f7;
-      color: #111;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
     }
 
     .box {
-      background: white;
-      padding: 24px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+      background: var(--card-bg);
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
     }
 
-    input {
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      color: #111;
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-top: 16px;
+    }
+
+    input[type="password"], input[type="text"] {
       width: 100%;
-      padding: 12px;
+      padding: 14px 48px 14px 14px;
       font-size: 18px;
-      margin-top: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
       box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .toggle-btn:hover {
+      color: var(--text-main);
+    }
+
+    /* Strength Bar Styles */
+    .strength-bar-bg {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 99px;
+      margin-top: 16px;
+      overflow: hidden;
+    }
+
+    .strength-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      transition: width 0.4s ease, background-color 0.4s ease;
+      background-color: #ef4444; /* Default Red */
     }
 
     .result {
-      margin-top: 20px;
-      font-size: 22px;
+      margin-top: 12px;
+      font-size: 20px;
       font-weight: bold;
     }
 
     .small {
-      margin-top: 8px;
-      color: #555;
-      font-size: 15px;
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    /* Hardware Selectors */
+    .controls {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .control-group label {
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 14px;
     }
 
     .section {
-      margin-top: 20px;
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid #f3f4f6;
+    }
+
+    .grid-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat-box {
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-top: 4px;
     }
 
     ul {
       padding-left: 20px;
+      color: var(--text-main);
+    }
+
+    li {
+      margin-bottom: 6px;
     }
 
     .badge {
       display: inline-block;
-      padding: 6px 10px;
+      padding: 4px 10px;
       border-radius: 999px;
-      background: #eee;
-      font-size: 14px;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 13px;
+      font-weight: 600;
       margin-right: 8px;
       margin-top: 8px;
+    }
+    
+    .badge.warning {
+      background: #fee2e2;
+      color: #991b1b;
     }
   </style>
 </head>
 <body>
   <div class="box">
     <h1>Password Strength Tester</h1>
-    <p>Type a password below to test its strength locally in your browser.</p>
+    <p class="small" style="margin-top: -4px; margin-bottom: 20px;">100% Local. Your password never leaves your browser.</p>
 
-    <input type="password" id="passwordInput" placeholder="Enter password" />
+    <div class="input-wrapper">
+      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." />
+      <button class="toggle-btn" id="toggleBtn">SHOW</button>
+    </div>
+
+    <div class="strength-bar-bg">
+      <div class="strength-bar-fill" id="strengthBar"></div>
+    </div>
 
     <div class="result" id="result">Strength: —</div>
-    <div class="small" id="details">Entropy estimate will appear here.</div>
+    <div class="small" id="details">Waiting for input...</div>
 
-    <div class="section">
-      <div><strong>Estimated crack time</strong></div>
-      <div class="small" id="onlineTime">Online attack: —</div>
-      <div class="small" id="gpuTime">Offline GPU attack: —</div>
-      <div class="small" id="searchSpace">Search space: —</div>
+    <div class="controls">
+      <div class="control-group">
+        <label for="onlineSelect">Online Attacker Speed</label>
+        <select id="onlineSelect">
+          <option value="10">Web Login (10 / sec)</option>
+          <option value="1000" selected>Fast API (1,000 / sec)</option>
+          <option value="100000">No Rate Limit (100k / sec)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="gpuSelect">Offline Attacker Hardware</label>
+        <select id="gpuSelect">
+          <option value="1e10">Standard PC CPU (10 GH/s)</option>
+          <option value="1e11" selected>1x RTX 4090 GPU (100 GH/s)</option>
+          <option value="8e11">8x RTX 4090 Rig (800 GH/s)</option>
+          <option value="1e14">Nation State Cluster (100 TH/s)</option>
+        </select>
+      </div>
     </div>
 
     <div class="section">
-      <div><strong>Flags</strong></div>
+      <div><strong>Crack Time Estimates</strong></div>
+      <div class="grid-stats">
+        <div class="stat-box">
+          <div class="stat-label">Online Attack</div>
+          <div class="stat-value" id="onlineTime">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Offline GPU Attack</div>
+          <div class="stat-value" id="gpuTime">—</div>
+        </div>
+      </div>
+      <div class="small" style="margin-top: 12px;" id="searchSpace">Total combinations: —</div>
+    </div>
+
+    <div class="section">
+      <div><strong>Detected Patterns</strong></div>
       <div id="flags"></div>
     </div>
 
@@ -93,6 +263,7 @@
   <script src="password.js"></script>
   <script>
     const input = document.getElementById("passwordInput");
+    const toggleBtn = document.getElementById("toggleBtn");
     const result = document.getElementById("result");
     const details = document.getElementById("details");
     const onlineTime = document.getElementById("onlineTime");
@@ -100,28 +271,52 @@
     const searchSpace = document.getElementById("searchSpace");
     const flags = document.getElementById("flags");
     const feedbackList = document.getElementById("feedbackList");
+    const strengthBar = document.getElementById("strengthBar");
+
+    const onlineSelect = document.getElementById("onlineSelect");
+    const gpuSelect = document.getElementById("gpuSelect");
+
+    toggleBtn.addEventListener("click", () => {
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "HIDE";
+      } else {
+        input.type = "password";
+        toggleBtn.textContent = "SHOW";
+      }
+    });
 
     function renderFlags(data) {
       flags.innerHTML = "";
       const items = [];
+      const warnings = [];
 
       if (data.isPassphrase) items.push("Passphrase");
-      if (data.isBreached) items.push("Compromised pattern");
-      if (data.sequential) items.push("Sequential");
-      if (data.spatialKeyboard) items.push("Keyboard walk");
-      if (data.repeatedChars) items.push("Repeated chars");
-      if (data.repeatedPattern) items.push("Repeated pattern");
-      if (data.birthdateLike) items.push("Date-like");
+      if (data.isBreached) warnings.push("Compromised pattern");
+      if (data.sequential) warnings.push("Sequential");
+      if (data.spatialKeyboard) warnings.push("Keyboard walk");
+      if (data.repeatedChars) warnings.push("Repeated chars");
+      if (data.repeatedPattern) warnings.push("Repeated pattern");
+      if (data.birthdateLike) warnings.push("Date-like");
 
-      if (items.length === 0) {
-        flags.textContent = "No obvious structural warnings detected.";
+      if (items.length === 0 && warnings.length === 0) {
+        flags.innerHTML = "<span class='small'>No obvious structural warnings detected.</span>";
         return;
       }
 
+      // Render info badges
       for (const item of items) {
         const span = document.createElement("span");
         span.className = "badge";
         span.textContent = item;
+        flags.appendChild(span);
+      }
+      
+      // Render warning badges in red
+      for (const warn of warnings) {
+        const span = document.createElement("span");
+        span.className = "badge warning";
+        span.textContent = warn;
         flags.appendChild(span);
       }
     }
@@ -134,42 +329,70 @@
         feedbackList.appendChild(li);
       }
     }
+    
+    function updateBar(score) {
+      strengthBar.style.width = score + "%";
+      
+      if (score < 25) {
+        strengthBar.style.backgroundColor = "#ef4444"; // Red
+      } else if (score < 50) {
+        strengthBar.style.backgroundColor = "#f97316"; // Orange
+      } else if (score < 75) {
+        strengthBar.style.backgroundColor = "#eab308"; // Yellow
+      } else {
+        strengthBar.style.backgroundColor = "#22c55e"; // Green
+      }
+    }
 
     function analyze() {
       const password = input.value;
 
       if (!password) {
         result.textContent = "Strength: —";
-        details.textContent = "Entropy estimate will appear here.";
-        onlineTime.textContent = "Online attack: —";
-        gpuTime.textContent = "Offline GPU attack: —";
-        searchSpace.textContent = "Search space: —";
-        flags.textContent = "";
+        details.textContent = "Waiting for input...";
+        onlineTime.textContent = "—";
+        gpuTime.textContent = "—";
+        searchSpace.textContent = "Total combinations: —";
+        flags.innerHTML = "";
         feedbackList.innerHTML = "";
+        updateBar(0);
         return;
       }
+
+      const onlineSpeed = parseFloat(onlineSelect.value);
+      const gpuSpeed = parseFloat(gpuSelect.value);
 
       const json = Module.ccall(
         "analyze_password_json",
         "string",
-        ["string"],
-        [password]
+        ["string", "number", "number"],
+        [password, onlineSpeed, gpuSpeed]
       );
 
       const data = JSON.parse(json);
 
       result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
       details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
-      onlineTime.textContent = `Online attack: ${data.onlineTime}`;
-      gpuTime.textContent = `Offline GPU attack: ${data.gpuTime}`;
-      searchSpace.textContent = `Search space: ${data.searchSpace}`;
-
+      onlineTime.textContent = `${data.onlineTime}`;
+      gpuTime.textContent = `${data.gpuTime}`;
+      searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
+      
+      updateBar(data.score);
       renderFlags(data);
       renderFeedback(data.feedback);
     }
 
+    let timeout;
+    input.addEventListener("input", () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(analyze, 150);
+    });
+
+    onlineSelect.addEventListener("change", analyze);
+    gpuSelect.addEventListener("change", analyze);
+
     Module.onRuntimeInitialized = () => {
-      input.addEventListener("input", analyze);
+      analyze();
     };
   </script>
 </body>
