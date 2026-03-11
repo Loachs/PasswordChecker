@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 700px;
+      max-width: 800px;
       margin: 60px auto;
       padding: 20px;
       background: #f7f7f7;
@@ -28,18 +28,37 @@
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      box-sizing: border-box;
     }
 
     .result {
       margin-top: 20px;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
     }
 
     .small {
-      margin-top: 10px;
+      margin-top: 8px;
       color: #555;
+      font-size: 15px;
+    }
+
+    .section {
+      margin-top: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eee;
       font-size: 14px;
+      margin-right: 8px;
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -49,47 +68,109 @@
     <p>Type a password below to test its strength locally in your browser.</p>
 
     <input type="password" id="passwordInput" placeholder="Enter password" />
+
     <div class="result" id="result">Strength: —</div>
     <div class="small" id="details">Entropy estimate will appear here.</div>
+
+    <div class="section">
+      <div><strong>Estimated crack time</strong></div>
+      <div class="small" id="onlineTime">Online attack: —</div>
+      <div class="small" id="gpuTime">Offline GPU attack: —</div>
+      <div class="small" id="searchSpace">Search space: —</div>
+    </div>
+
+    <div class="section">
+      <div><strong>Flags</strong></div>
+      <div id="flags"></div>
+    </div>
+
+    <div class="section">
+      <div><strong>Feedback</strong></div>
+      <ul id="feedbackList"></ul>
+    </div>
   </div>
 
+  <script src="password.js"></script>
   <script>
-    function calculateStrength(password) {
-      let hasLower = /[a-z]/.test(password);
-      let hasUpper = /[A-Z]/.test(password);
-      let hasDigit = /[0-9]/.test(password);
-      let hasSpecial = /[^A-Za-z0-9]/.test(password);
-
-      let pool = 0;
-      if (hasLower) pool += 26;
-      if (hasUpper) pool += 26;
-      if (hasDigit) pool += 10;
-      if (hasSpecial) pool += 33;
-
-      if (password.length === 0 || pool === 0) {
-        return { label: "—", entropy: 0 };
-      }
-
-      let entropy = password.length * Math.log2(pool);
-
-      let label = "Weak";
-      if (entropy >= 40) label = "Moderate";
-      if (entropy >= 60) label = "Strong";
-      if (entropy >= 80) label = "Very Strong";
-
-      return { label, entropy: entropy.toFixed(2) };
-    }
-
     const input = document.getElementById("passwordInput");
     const result = document.getElementById("result");
     const details = document.getElementById("details");
+    const onlineTime = document.getElementById("onlineTime");
+    const gpuTime = document.getElementById("gpuTime");
+    const searchSpace = document.getElementById("searchSpace");
+    const flags = document.getElementById("flags");
+    const feedbackList = document.getElementById("feedbackList");
 
-    input.addEventListener("input", () => {
+    function renderFlags(data) {
+      flags.innerHTML = "";
+      const items = [];
+
+      if (data.isPassphrase) items.push("Passphrase");
+      if (data.isBreached) items.push("Compromised pattern");
+      if (data.sequential) items.push("Sequential");
+      if (data.spatialKeyboard) items.push("Keyboard walk");
+      if (data.repeatedChars) items.push("Repeated chars");
+      if (data.repeatedPattern) items.push("Repeated pattern");
+      if (data.birthdateLike) items.push("Date-like");
+
+      if (items.length === 0) {
+        flags.textContent = "No obvious structural warnings detected.";
+        return;
+      }
+
+      for (const item of items) {
+        const span = document.createElement("span");
+        span.className = "badge";
+        span.textContent = item;
+        flags.appendChild(span);
+      }
+    }
+
+    function renderFeedback(messages) {
+      feedbackList.innerHTML = "";
+      for (const msg of messages) {
+        const li = document.createElement("li");
+        li.textContent = msg;
+        feedbackList.appendChild(li);
+      }
+    }
+
+    function analyze() {
       const password = input.value;
-      const data = calculateStrength(password);
-      result.textContent = `Strength: ${data.label}`;
-      details.textContent = `Estimated entropy: ${data.entropy} bits`;
-    });
+
+      if (!password) {
+        result.textContent = "Strength: —";
+        details.textContent = "Entropy estimate will appear here.";
+        onlineTime.textContent = "Online attack: —";
+        gpuTime.textContent = "Offline GPU attack: —";
+        searchSpace.textContent = "Search space: —";
+        flags.textContent = "";
+        feedbackList.innerHTML = "";
+        return;
+      }
+
+      const json = Module.ccall(
+        "analyze_password_json",
+        "string",
+        ["string"],
+        [password]
+      );
+
+      const data = JSON.parse(json);
+
+      result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
+      details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
+      onlineTime.textContent = `Online attack: ${data.onlineTime}`;
+      gpuTime.textContent = `Offline GPU attack: ${data.gpuTime}`;
+      searchSpace.textContent = `Search space: ${data.searchSpace}`;
+
+      renderFlags(data);
+      renderFeedback(data.feedback);
+    }
+
+    Module.onRuntimeInitialized = () => {
+      input.addEventListener("input", analyze);
+    };
   </script>
 </body>
 </html>
