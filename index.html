@@ -26,6 +26,8 @@
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337914085760084" crossorigin="anonymous"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     :root {
       --primary: #218481;      
@@ -61,7 +63,6 @@
       transition: box-shadow 0.2s ease-out;
     }
 
-    /* This class is added via JS on keystroke to create the flash */
     .box.flash {
       --glow-spread: 60px; 
     }
@@ -243,6 +244,63 @@
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
+    /* --- Cryptography Dashboard Styles --- */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .metric-box {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(33, 132, 129, 0.15);
+      text-align: center;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4fd1c5;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .charset-visualizer {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: center;
+    }
+
+    .char-badge {
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #6b7280;
+      font-size: 12px;
+      font-family: monospace;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+    }
+
+    .char-badge.active {
+      background: rgba(33, 132, 129, 0.2);
+      color: #4fd1c5;
+      border-color: #218481;
+      box-shadow: 0 0 8px rgba(33, 132, 129, 0.4);
+    }
+
     .ad-wrapper {
       text-align: center;
       margin-top: 24px;
@@ -309,18 +367,18 @@
   <div class="box" id="mainBox">
     
     <div style="text-align: center; margin-bottom: 24px;">
-  <img src="logo.jpg" alt="Free Password Checker Logo"
-       style="width: 72px; height: 72px; border-radius: 16px; object-fit: cover;
-       box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 12px;" />
+      <img src="logo.jpg" alt="Free Password Checker Logo"
+           style="width: 72px; height: 72px; border-radius: 16px; object-fit: cover;
+           box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 12px;" />
 
-  <h1>Password Strength Tester</h1>
+      <h1>Password Strength Tester</h1>
 
-  <p class="small" style="margin-top: 0; max-width: 520px; margin-left: auto; margin-right: auto;">
-    Your password is analyzed <strong>entirely in your browser</strong>.
-    It is <strong>never sent to any server</strong>, <strong>never stored</strong>,
-    and <strong>never logged</strong>.
-  </p>
-</div>>
+      <p class="small" style="margin-top: 0; max-width: 520px; margin-left: auto; margin-right: auto;">
+        Your password is analyzed <strong>entirely in your browser</strong>.
+        It is <strong>never sent to any server</strong>, <strong>never stored</strong>,
+        and <strong>never logged</strong>.
+      </p>
+    </div>
 
     <div class="input-wrapper">
       <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." autocomplete="off" />
@@ -351,6 +409,36 @@
           <option value="8e11">8x RTX 4090 Rig (800 GH/s)</option>
           <option value="1e14">Nation State Cluster (100 TH/s)</option>
         </select>
+      </div>
+    </div>
+
+    <div class="section">
+      <div><strong>Cryptography Metrics</strong></div>
+      
+      <div class="charset-visualizer">
+        <div class="char-badge" id="badge-lower">[a-z]</div>
+        <div class="char-badge" id="badge-upper">[A-Z]</div>
+        <div class="char-badge" id="badge-num">[0-9]</div>
+        <div class="char-badge" id="badge-sym">[!@#]</div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <span class="metric-label">Length</span>
+          <span class="metric-value" id="charLength">0</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Pool Size</span>
+          <span class="metric-value" id="poolSize">0</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Raw Entropy</span>
+          <span class="metric-value" id="exactEntropy">0.0</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; height: 160px; display: flex; justify-content: center; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid var(--border); padding: 12px;">
+        <canvas id="compositionChart"></canvas>
       </div>
     </div>
 
@@ -446,6 +534,42 @@
     const onlineSelect = document.getElementById("onlineSelect");
     const gpuSelect = document.getElementById("gpuSelect");
 
+    // --- Initialize Chart.js ---
+    const ctx = document.getElementById('compositionChart').getContext('2d');
+    let compChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Lowercase', 'Uppercase', 'Numbers', 'Symbols'],
+        datasets: [{
+          data: [0, 0, 0, 0],
+          backgroundColor: [
+            '#218481', // Dark Teal
+            '#4fd1c5', // Light Teal
+            '#eab308', // Yellow
+            '#ef4444'  // Red
+          ],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        color: '#9ca3af',
+        cutout: '70%',
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              color: '#9ca3af',
+              font: { family: 'monospace', size: 11 },
+              boxWidth: 12
+            }
+          }
+        }
+      }
+    });
+
     toggleBtn.addEventListener("click", () => {
       if (input.type === "password") {
         input.type = "text";
@@ -504,19 +628,19 @@
       if (score === 0 && !input.value) {
         mainBox.style.setProperty('--glow-color', 'rgba(33, 132, 129, 0.05)');
       } else if (score < 25) {
-        strengthBar.style.backgroundColor = "#ef4444"; // Red
+        strengthBar.style.backgroundColor = "#ef4444"; 
         strengthBar.style.boxShadow = "none";
         mainBox.style.setProperty('--glow-color', 'rgba(239, 68, 68, 0.25)');
       } else if (score < 50) {
-        strengthBar.style.backgroundColor = "#f97316"; // Orange
+        strengthBar.style.backgroundColor = "#f97316"; 
         strengthBar.style.boxShadow = "none";
         mainBox.style.setProperty('--glow-color', 'rgba(249, 115, 22, 0.25)');
       } else if (score < 75) {
-        strengthBar.style.backgroundColor = "#eab308"; // Yellow
+        strengthBar.style.backgroundColor = "#eab308"; 
         strengthBar.style.boxShadow = "none";
         mainBox.style.setProperty('--glow-color', 'rgba(234, 179, 8, 0.25)');
       } else {
-        strengthBar.style.backgroundColor = "#218481"; // Teal
+        strengthBar.style.backgroundColor = "#218481"; 
         strengthBar.style.boxShadow = "0 0 10px rgba(33, 132, 129, 0.6)"; 
         mainBox.style.setProperty('--glow-color', 'rgba(33, 132, 129, 0.4)');
       }
@@ -525,7 +649,26 @@
     function analyze() {
       const password = input.value;
 
+      const charLengthEl = document.getElementById("charLength");
+      const poolSizeEl = document.getElementById("poolSize");
+      const exactEntropyEl = document.getElementById("exactEntropy");
+      const badgeLower = document.getElementById("badge-lower");
+      const badgeUpper = document.getElementById("badge-upper");
+      const badgeNum = document.getElementById("badge-num");
+      const badgeSym = document.getElementById("badge-sym");
+
       if (!password) {
+        charLengthEl.textContent = "0";
+        poolSizeEl.textContent = "0";
+        exactEntropyEl.textContent = "0.0";
+        badgeLower.classList.remove("active");
+        badgeUpper.classList.remove("active");
+        badgeNum.classList.remove("active");
+        badgeSym.classList.remove("active");
+
+        compChart.data.datasets[0].data = [0, 0, 0, 0];
+        compChart.update();
+
         result.textContent = "Strength: —";
         details.textContent = "Waiting for input...";
         onlineTime.textContent = "—";
@@ -537,6 +680,34 @@
         return;
       }
 
+      let pool = 0;
+      const hasLower = /[a-z]/.test(password);
+      const hasUpper = /[A-Z]/.test(password);
+      const hasNum = /[0-9]/.test(password);
+      const hasSym = /[^a-zA-Z0-9\s]/.test(password);
+
+      if (hasLower) pool += 26;
+      if (hasUpper) pool += 26;
+      if (hasNum) pool += 10;
+      if (hasSym) pool += 33;
+      if (/\s/.test(password)) pool += 1; 
+
+      badgeLower.classList.toggle("active", hasLower);
+      badgeUpper.classList.toggle("active", hasUpper);
+      badgeNum.classList.toggle("active", hasNum);
+      badgeSym.classList.toggle("active", hasSym);
+
+      charLengthEl.textContent = password.length;
+      poolSizeEl.textContent = pool;
+
+      const numLower = (password.match(/[a-z]/g) || []).length;
+      const numUpper = (password.match(/[A-Z]/g) || []).length;
+      const numDigits = (password.match(/[0-9]/g) || []).length;
+      const numSym = (password.match(/[^a-zA-Z0-9\s]/g) || []).length;
+
+      compChart.data.datasets[0].data = [numLower, numUpper, numDigits, numSym];
+      compChart.update();
+      
       const onlineSpeed = parseFloat(onlineSelect.value);
       const gpuSpeed = parseFloat(gpuSelect.value);
 
@@ -548,6 +719,8 @@
       );
 
       const data = JSON.parse(json);
+
+      exactEntropyEl.textContent = data.entropyBits.toFixed(1);
 
       result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
       details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
