@@ -1,10 +1,17 @@
-:root {
-      --primary: #218481;      /* The requested custom teal */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Strength Tester</title>
+  <style>
+    :root {
+      --primary: #218481;      /* Teal */
       --bg-top: #151122;       /* Very dark purple */
-      --bg-bottom: #1a142c;    /* Slightly lighter blended purple */
+      --bg-bottom: #1a142c;    /* Lighter purple */
       --card-bg: #1f1a30;      /* Elevated purple for the main box */
       --input-bg: #0d0a15;     /* Deep contrast for inputs */
-      --text-main: #f3f4f6;    /* Crisp off-white */
+      --text-main: #f3f4f6;    /* Off-white */
       --text-muted: #9ca3af;   /* Soft gray for secondary text */
       --border: #352d4d;       /* Blended purple-gray borders */
     }
@@ -75,7 +82,6 @@
       color: var(--primary);
     }
 
-    /* Strength Bar Styles */
     .strength-bar-bg {
       height: 8px;
       background: #2a233f;
@@ -106,7 +112,6 @@
       margin-top: 4px;
     }
 
-    /* Hardware Selectors */
     .controls {
       display: flex;
       gap: 16px;
@@ -263,7 +268,218 @@
       }
 
       input[type="password"], input[type="text"] {
-        font-size: 16px;
+        font-size: 16px; /* Prevents auto-zoom on iOS */
         padding: 12px 48px 12px 12px;
       }
     }
+  </style>
+</head>
+<body>
+  
+  <div class="box">
+    <h1>Password Strength Tester</h1>
+    <p class="small" style="margin-top: -4px; margin-bottom: 20px;">100% Local. Your password never leaves your browser.</p>
+
+    <div class="input-wrapper">
+      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." />
+      <button class="toggle-btn" id="toggleBtn">SHOW</button>
+    </div>
+
+    <div class="strength-bar-bg">
+      <div class="strength-bar-fill" id="strengthBar"></div>
+    </div>
+
+    <div class="result" id="result">Strength: —</div>
+    <div class="small" id="details">Waiting for input...</div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="onlineSelect">Online Attacker Speed</label>
+        <select id="onlineSelect">
+          <option value="10">Web Login (10 / sec)</option>
+          <option value="1000" selected>Fast API (1,000 / sec)</option>
+          <option value="100000">No Rate Limit (100k / sec)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="gpuSelect">Offline Attacker Hardware</label>
+        <select id="gpuSelect">
+          <option value="1e10">Standard PC CPU (10 GH/s)</option>
+          <option value="1e11" selected>1x RTX 4090 GPU (100 GH/s)</option>
+          <option value="8e11">8x RTX 4090 Rig (800 GH/s)</option>
+          <option value="1e14">Nation State Cluster (100 TH/s)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section">
+      <div><strong>Crack Time Estimates</strong></div>
+      <div class="grid-stats">
+        <div class="stat-box">
+          <div class="stat-label">Online Attack</div>
+          <div class="stat-value" id="onlineTime">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Offline GPU Attack</div>
+          <div class="stat-value" id="gpuTime">—</div>
+        </div>
+      </div>
+      <div class="small" style="margin-top: 12px;" id="searchSpace">Total combinations: —</div>
+    </div>
+
+    <div class="section">
+      <div><strong>Detected Patterns</strong></div>
+      <div id="flags"></div>
+    </div>
+
+    <div class="section">
+      <div><strong>Feedback</strong></div>
+      <ul id="feedbackList"></ul>
+    </div>
+  </div>
+
+  <div class="ad-wrapper">
+    <div class="ad-label">Advertisement</div>
+    <div class="ad-slot" id="adContainer">
+      Ad Space Ready
+    </div>
+  </div>
+  <script src="password.js"></script>
+  <script>
+    const input = document.getElementById("passwordInput");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const result = document.getElementById("result");
+    const details = document.getElementById("details");
+    const onlineTime = document.getElementById("onlineTime");
+    const gpuTime = document.getElementById("gpuTime");
+    const searchSpace = document.getElementById("searchSpace");
+    const flags = document.getElementById("flags");
+    const feedbackList = document.getElementById("feedbackList");
+    const strengthBar = document.getElementById("strengthBar");
+
+    const onlineSelect = document.getElementById("onlineSelect");
+    const gpuSelect = document.getElementById("gpuSelect");
+
+    toggleBtn.addEventListener("click", () => {
+      if (input.type === "password") {
+        input.type = "text";
+        toggleBtn.textContent = "HIDE";
+      } else {
+        input.type = "password";
+        toggleBtn.textContent = "SHOW";
+      }
+    });
+
+    function renderFlags(data) {
+      flags.innerHTML = "";
+      const items = [];
+      const warnings = [];
+
+      if (data.isPassphrase) items.push("Passphrase");
+      if (data.isBreached) warnings.push("Compromised pattern");
+      if (data.sequential) warnings.push("Sequential");
+      if (data.spatialKeyboard) warnings.push("Keyboard walk");
+      if (data.repeatedChars) warnings.push("Repeated chars");
+      if (data.repeatedPattern) warnings.push("Repeated pattern");
+      if (data.birthdateLike) warnings.push("Date-like");
+
+      if (items.length === 0 && warnings.length === 0) {
+        flags.innerHTML = "<span class='small'>No obvious structural warnings detected.</span>";
+        return;
+      }
+
+      for (const item of items) {
+        const span = document.createElement("span");
+        span.className = "badge";
+        span.textContent = item;
+        flags.appendChild(span);
+      }
+      
+      for (const warn of warnings) {
+        const span = document.createElement("span");
+        span.className = "badge warning";
+        span.textContent = warn;
+        flags.appendChild(span);
+      }
+    }
+
+    function renderFeedback(messages) {
+      feedbackList.innerHTML = "";
+      for (const msg of messages) {
+        const li = document.createElement("li");
+        li.textContent = msg;
+        feedbackList.appendChild(li);
+      }
+    }
+    
+    function updateBar(score) {
+      strengthBar.style.width = score + "%";
+      
+      if (score < 25) {
+        strengthBar.style.backgroundColor = "#ef4444"; // Red
+        strengthBar.style.boxShadow = "none";
+      } else if (score < 50) {
+        strengthBar.style.backgroundColor = "#f97316"; // Orange
+        strengthBar.style.boxShadow = "none";
+      } else if (score < 75) {
+        strengthBar.style.backgroundColor = "#eab308"; // Yellow
+        strengthBar.style.boxShadow = "none";
+      } else {
+        strengthBar.style.backgroundColor = "#218481"; // The requested Teal
+        strengthBar.style.boxShadow = "0 0 10px rgba(33, 132, 129, 0.6)"; // Added glow
+      }
+    }
+
+    function analyze() {
+      const password = input.value;
+
+      if (!password) {
+        result.textContent = "Strength: —";
+        details.textContent = "Waiting for input...";
+        onlineTime.textContent = "—";
+        gpuTime.textContent = "—";
+        searchSpace.textContent = "Total combinations: —";
+        flags.innerHTML = "";
+        feedbackList.innerHTML = "";
+        updateBar(0);
+        return;
+      }
+
+      const onlineSpeed = parseFloat(onlineSelect.value);
+      const gpuSpeed = parseFloat(gpuSelect.value);
+
+      const json = Module.ccall(
+        "analyze_password_json",
+        "string",
+        ["string", "number", "number"],
+        [password, onlineSpeed, gpuSpeed]
+      );
+
+      const data = JSON.parse(json);
+
+      result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
+      details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
+      onlineTime.textContent = `${data.onlineTime}`;
+      gpuTime.textContent = `${data.gpuTime}`;
+      searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
+      
+      updateBar(data.score);
+      renderFlags(data);
+      renderFeedback(data.feedback);
+    }
+
+    let timeout;
+    input.addEventListener("input", () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(analyze, 150);
+    });
+
+    onlineSelect.addEventListener("change", analyze);
+    gpuSelect.addEventListener("change", analyze);
+
+    Module.onRuntimeInitialized = () => {
+      analyze();
+    };
+  </script>
+</body>
+</html>
