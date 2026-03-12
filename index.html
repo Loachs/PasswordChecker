@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Password Strength Tester</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --bg: #f3f4f6;
-      --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #6b7280;
-      --border: #d1d5db;
+:root {
+      --primary: #218481;      /* The requested custom teal */
+      --bg-top: #151122;       /* Very dark purple */
+      --bg-bottom: #1a142c;    /* Slightly lighter blended purple */
+      --card-bg: #1f1a30;      /* Elevated purple for the main box */
+      --input-bg: #0d0a15;     /* Deep contrast for inputs */
+      --text-main: #f3f4f6;    /* Crisp off-white */
+      --text-muted: #9ca3af;   /* Soft gray for secondary text */
+      --border: #352d4d;       /* Blended purple-gray borders */
     }
 
     body {
@@ -19,7 +14,8 @@
       max-width: 700px;
       margin: 60px auto;
       padding: 20px;
-      background: var(--bg);
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.5;
     }
@@ -28,13 +24,14 @@
       background: var(--card-bg);
       padding: 32px;
       border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(33, 132, 129, 0.05); /* Subtle teal glow */
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     h1 {
       margin-top: 0;
       font-size: 24px;
-      color: #111;
+      color: #ffffff;
     }
 
     .input-wrapper {
@@ -46,16 +43,18 @@
       width: 100%;
       padding: 14px 48px 14px 14px;
       font-size: 18px;
+      background: var(--input-bg);
+      color: #ffffff;
       border: 1px solid var(--border);
       border-radius: 10px;
       box-sizing: border-box;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     input:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      box-shadow: 0 0 0 3px rgba(33, 132, 129, 0.25);
     }
 
     .toggle-btn {
@@ -69,33 +68,36 @@
       cursor: pointer;
       font-size: 14px;
       font-weight: bold;
+      transition: color 0.2s;
     }
 
     .toggle-btn:hover {
-      color: var(--text-main);
+      color: var(--primary);
     }
 
     /* Strength Bar Styles */
     .strength-bar-bg {
       height: 8px;
-      background: #e5e7eb;
+      background: #2a233f;
       border-radius: 99px;
       margin-top: 16px;
       overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .strength-bar-fill {
       height: 100%;
       width: 0%;
       border-radius: 99px;
-      transition: width 0.4s ease, background-color 0.4s ease;
-      background-color: #ef4444; /* Default Red */
+      transition: width 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
+      background-color: #ef4444; 
     }
 
     .result {
       margin-top: 12px;
       font-size: 20px;
       font-weight: bold;
+      color: #ffffff;
     }
 
     .small {
@@ -109,7 +111,7 @@
       display: flex;
       gap: 16px;
       margin-top: 24px;
-      background: #f8fafc;
+      background: rgba(0, 0, 0, 0.15);
       padding: 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
@@ -132,14 +134,20 @@
       padding: 8px;
       border-radius: 6px;
       border: 1px solid var(--border);
-      background: white;
+      background: var(--input-bg);
+      color: var(--text-main);
       font-size: 14px;
+      outline: none;
+    }
+    
+    select:focus {
+      border-color: var(--primary);
     }
 
     .section {
       margin-top: 28px;
       padding-top: 20px;
-      border-top: 1px solid #f3f4f6;
+      border-top: 1px solid var(--border);
     }
 
     .grid-stats {
@@ -150,10 +158,10 @@
     }
 
     .stat-box {
-      background: #f8fafc;
+      background: rgba(255, 255, 255, 0.03);
       padding: 12px;
       border-radius: 8px;
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border);
     }
 
     .stat-label {
@@ -166,7 +174,7 @@
     .stat-value {
       font-size: 16px;
       font-weight: 600;
-      color: #0f172a;
+      color: #ffffff;
       margin-top: 4px;
     }
 
@@ -183,217 +191,79 @@
       display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
-      background: #e0e7ff;
-      color: #3730a3;
+      background: rgba(33, 132, 129, 0.15); /* Tinted teal */
+      color: #4fd1c5; /* Bright teal text */
       font-size: 13px;
       font-weight: 600;
       margin-right: 8px;
       margin-top: 8px;
+      border: 1px solid rgba(33, 132, 129, 0.3);
     }
     
     .badge.warning {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>Password Strength Tester</h1>
-    <p class="small" style="margin-top: -4px; margin-bottom: 20px;">100% Local. Your password never leaves your browser.</p>
-
-    <div class="input-wrapper">
-      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." />
-      <button class="toggle-btn" id="toggleBtn">SHOW</button>
-    </div>
-
-    <div class="strength-bar-bg">
-      <div class="strength-bar-fill" id="strengthBar"></div>
-    </div>
-
-    <div class="result" id="result">Strength: —</div>
-    <div class="small" id="details">Waiting for input...</div>
-
-    <div class="controls">
-      <div class="control-group">
-        <label for="onlineSelect">Online Attacker Speed</label>
-        <select id="onlineSelect">
-          <option value="10">Web Login (10 / sec)</option>
-          <option value="1000" selected>Fast API (1,000 / sec)</option>
-          <option value="100000">No Rate Limit (100k / sec)</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label for="gpuSelect">Offline Attacker Hardware</label>
-        <select id="gpuSelect">
-          <option value="1e10">Standard PC CPU (10 GH/s)</option>
-          <option value="1e11" selected>1x RTX 4090 GPU (100 GH/s)</option>
-          <option value="8e11">8x RTX 4090 Rig (800 GH/s)</option>
-          <option value="1e14">Nation State Cluster (100 TH/s)</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="section">
-      <div><strong>Crack Time Estimates</strong></div>
-      <div class="grid-stats">
-        <div class="stat-box">
-          <div class="stat-label">Online Attack</div>
-          <div class="stat-value" id="onlineTime">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Offline GPU Attack</div>
-          <div class="stat-value" id="gpuTime">—</div>
-        </div>
-      </div>
-      <div class="small" style="margin-top: 12px;" id="searchSpace">Total combinations: —</div>
-    </div>
-
-    <div class="section">
-      <div><strong>Detected Patterns</strong></div>
-      <div id="flags"></div>
-    </div>
-
-    <div class="section">
-      <div><strong>Feedback</strong></div>
-      <ul id="feedbackList"></ul>
-    </div>
-  </div>
-
-  <script src="password.js"></script>
-  <script>
-    const input = document.getElementById("passwordInput");
-    const toggleBtn = document.getElementById("toggleBtn");
-    const result = document.getElementById("result");
-    const details = document.getElementById("details");
-    const onlineTime = document.getElementById("onlineTime");
-    const gpuTime = document.getElementById("gpuTime");
-    const searchSpace = document.getElementById("searchSpace");
-    const flags = document.getElementById("flags");
-    const feedbackList = document.getElementById("feedbackList");
-    const strengthBar = document.getElementById("strengthBar");
-
-    const onlineSelect = document.getElementById("onlineSelect");
-    const gpuSelect = document.getElementById("gpuSelect");
-
-    toggleBtn.addEventListener("click", () => {
-      if (input.type === "password") {
-        input.type = "text";
-        toggleBtn.textContent = "HIDE";
-      } else {
-        input.type = "password";
-        toggleBtn.textContent = "SHOW";
-      }
-    });
-
-    function renderFlags(data) {
-      flags.innerHTML = "";
-      const items = [];
-      const warnings = [];
-
-      if (data.isPassphrase) items.push("Passphrase");
-      if (data.isBreached) warnings.push("Compromised pattern");
-      if (data.sequential) warnings.push("Sequential");
-      if (data.spatialKeyboard) warnings.push("Keyboard walk");
-      if (data.repeatedChars) warnings.push("Repeated chars");
-      if (data.repeatedPattern) warnings.push("Repeated pattern");
-      if (data.birthdateLike) warnings.push("Date-like");
-
-      if (items.length === 0 && warnings.length === 0) {
-        flags.innerHTML = "<span class='small'>No obvious structural warnings detected.</span>";
-        return;
-      }
-
-      // Render info badges
-      for (const item of items) {
-        const span = document.createElement("span");
-        span.className = "badge";
-        span.textContent = item;
-        flags.appendChild(span);
-      }
-      
-      // Render warning badges in red
-      for (const warn of warnings) {
-        const span = document.createElement("span");
-        span.className = "badge warning";
-        span.textContent = warn;
-        flags.appendChild(span);
-      }
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    function renderFeedback(messages) {
-      feedbackList.innerHTML = "";
-      for (const msg of messages) {
-        const li = document.createElement("li");
-        li.textContent = msg;
-        feedbackList.appendChild(li);
-      }
+    /* --- Ad Container Styles --- */
+    .ad-wrapper {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .ad-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .ad-slot {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      padding: 20px;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 14px;
+      transition: border-color 0.2s;
     }
     
-    function updateBar(score) {
-      strengthBar.style.width = score + "%";
-      
-      if (score < 25) {
-        strengthBar.style.backgroundColor = "#ef4444"; // Red
-      } else if (score < 50) {
-        strengthBar.style.backgroundColor = "#f97316"; // Orange
-      } else if (score < 75) {
-        strengthBar.style.backgroundColor = "#eab308"; // Yellow
-      } else {
-        strengthBar.style.backgroundColor = "#22c55e"; // Green
-      }
+    .ad-slot:hover {
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
-    function analyze() {
-      const password = input.value;
-
-      if (!password) {
-        result.textContent = "Strength: —";
-        details.textContent = "Waiting for input...";
-        onlineTime.textContent = "—";
-        gpuTime.textContent = "—";
-        searchSpace.textContent = "Total combinations: —";
-        flags.innerHTML = "";
-        feedbackList.innerHTML = "";
-        updateBar(0);
-        return;
+    /* --- Mobile Responsiveness --- */
+    @media (max-width: 600px) {
+      body {
+        margin: 0;
+        padding: 16px;
+      }
+      
+      .box {
+        padding: 24px 20px;
       }
 
-      const onlineSpeed = parseFloat(onlineSelect.value);
-      const gpuSpeed = parseFloat(gpuSelect.value);
+      h1 {
+        font-size: 22px;
+      }
 
-      const json = Module.ccall(
-        "analyze_password_json",
-        "string",
-        ["string", "number", "number"],
-        [password, onlineSpeed, gpuSpeed]
-      );
+      .controls {
+        flex-direction: column;
+        gap: 12px;
+      }
 
-      const data = JSON.parse(json);
+      .grid-stats {
+        grid-template-columns: 1fr;
+      }
 
-      result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
-      details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
-      onlineTime.textContent = `${data.onlineTime}`;
-      gpuTime.textContent = `${data.gpuTime}`;
-      searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
-      
-      updateBar(data.score);
-      renderFlags(data);
-      renderFeedback(data.feedback);
+      input[type="password"], input[type="text"] {
+        font-size: 16px;
+        padding: 12px 48px 12px 12px;
+      }
     }
-
-    let timeout;
-    input.addEventListener("input", () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(analyze, 150);
-    });
-
-    onlineSelect.addEventListener("change", analyze);
-    gpuSelect.addEventListener("change", analyze);
-
-    Module.onRuntimeInitialized = () => {
-      analyze();
-    };
-  </script>
-</body>
-</html>
