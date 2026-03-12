@@ -6,14 +6,14 @@
   <title>Password Strength Tester</title>
   <style>
     :root {
-      --primary: #218481;      /* Teal */
-      --bg-top: #151122;       /* Very dark purple */
-      --bg-bottom: #1a142c;    /* Lighter purple */
-      --card-bg: #1f1a30;      /* Elevated purple for the main box */
-      --input-bg: #0d0a15;     /* Deep contrast for inputs */
-      --text-main: #f3f4f6;    /* Off-white */
-      --text-muted: #9ca3af;   /* Soft gray for secondary text */
-      --border: #352d4d;       /* Blended purple-gray borders */
+      --primary: #218481;      
+      --bg-top: #151122;       
+      --bg-bottom: #1a142c;    
+      --card-bg: #1f1a30;      
+      --input-bg: #0d0a15;     
+      --text-main: #f3f4f6;    
+      --text-muted: #9ca3af;   
+      --border: #352d4d;       
     }
 
     body {
@@ -27,18 +27,28 @@
       line-height: 1.5;
     }
 
+    /* --- The Reactive Light Engine --- */
     .box {
       background: var(--card-bg);
       padding: 32px;
       border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(33, 132, 129, 0.05); /* Subtle teal glow */
       border: 1px solid rgba(255, 255, 255, 0.05);
+      
+      /* Base shadow + CSS variables for dynamic lighting */
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 var(--glow-spread, 20px) var(--glow-color, rgba(33, 132, 129, 0.05));
+      transition: box-shadow 0.2s ease-out;
+    }
+
+    /* This class is added via JS on keystroke to create the flash */
+    .box.flash {
+      --glow-spread: 60px; 
     }
 
     h1 {
       margin-top: 0;
       font-size: 24px;
       color: #ffffff;
+      margin-bottom: 4px;
     }
 
     .input-wrapper {
@@ -196,8 +206,8 @@
       display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
-      background: rgba(33, 132, 129, 0.15); /* Tinted teal */
-      color: #4fd1c5; /* Bright teal text */
+      background: rgba(33, 132, 129, 0.15); 
+      color: #4fd1c5; 
       font-size: 13px;
       font-weight: 600;
       margin-right: 8px;
@@ -211,7 +221,6 @@
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
 
-    /* --- Ad Container Styles --- */
     .ad-wrapper {
       text-align: center;
       margin-top: 24px;
@@ -243,7 +252,6 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
-    /* --- Mobile Responsiveness --- */
     @media (max-width: 600px) {
       body {
         margin: 0;
@@ -268,7 +276,7 @@
       }
 
       input[type="password"], input[type="text"] {
-        font-size: 16px; /* Prevents auto-zoom on iOS */
+        font-size: 16px; 
         padding: 12px 48px 12px 12px;
       }
     }
@@ -276,12 +284,16 @@
 </head>
 <body>
   
-  <div class="box">
-    <h1>Password Strength Tester</h1>
-    <p class="small" style="margin-top: -4px; margin-bottom: 20px;">100% Local. Your password never leaves your browser.</p>
+  <div class="box" id="mainBox">
+    
+    <div style="text-align: center; margin-bottom: 24px;">
+      <img src="logo.jpg" alt="Free Password Checker Logo" style="width: 72px; height: 72px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.5); margin-bottom: 12px;" />
+      <h1>Password Strength Tester</h1>
+      <p class="small" style="margin-top: 0;">100% Local. Your password never leaves your browser.</p>
+    </div>
 
     <div class="input-wrapper">
-      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." />
+      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." autocomplete="off" />
       <button class="toggle-btn" id="toggleBtn">SHOW</button>
     </div>
 
@@ -344,6 +356,7 @@
       Ad Space Ready
     </div>
   </div>
+
   <script src="password.js"></script>
   <script>
     const input = document.getElementById("passwordInput");
@@ -356,6 +369,7 @@
     const flags = document.getElementById("flags");
     const feedbackList = document.getElementById("feedbackList");
     const strengthBar = document.getElementById("strengthBar");
+    const mainBox = document.getElementById("mainBox");
 
     const onlineSelect = document.getElementById("onlineSelect");
     const gpuSelect = document.getElementById("gpuSelect");
@@ -415,18 +429,26 @@
     function updateBar(score) {
       strengthBar.style.width = score + "%";
       
-      if (score < 25) {
+      // Update progress bar color and the environmental glow of the main box
+      if (score === 0 && !input.value) {
+        // Empty state
+        mainBox.style.setProperty('--glow-color', 'rgba(33, 132, 129, 0.05)');
+      } else if (score < 25) {
         strengthBar.style.backgroundColor = "#ef4444"; // Red
         strengthBar.style.boxShadow = "none";
+        mainBox.style.setProperty('--glow-color', 'rgba(239, 68, 68, 0.25)');
       } else if (score < 50) {
         strengthBar.style.backgroundColor = "#f97316"; // Orange
         strengthBar.style.boxShadow = "none";
+        mainBox.style.setProperty('--glow-color', 'rgba(249, 115, 22, 0.25)');
       } else if (score < 75) {
         strengthBar.style.backgroundColor = "#eab308"; // Yellow
         strengthBar.style.boxShadow = "none";
+        mainBox.style.setProperty('--glow-color', 'rgba(234, 179, 8, 0.25)');
       } else {
-        strengthBar.style.backgroundColor = "#218481"; // The requested Teal
-        strengthBar.style.boxShadow = "0 0 10px rgba(33, 132, 129, 0.6)"; // Added glow
+        strengthBar.style.backgroundColor = "#218481"; // Teal
+        strengthBar.style.boxShadow = "0 0 10px rgba(33, 132, 129, 0.6)"; 
+        mainBox.style.setProperty('--glow-color', 'rgba(33, 132, 129, 0.4)');
       }
     }
 
@@ -470,6 +492,11 @@
 
     let timeout;
     input.addEventListener("input", () => {
+      // 1. Instant lighting flash reaction
+      mainBox.classList.add("flash");
+      setTimeout(() => mainBox.classList.remove("flash"), 150);
+
+      // 2. Debounce the heavy WebAssembly math
       clearTimeout(timeout);
       timeout = setTimeout(analyze, 150);
     });
