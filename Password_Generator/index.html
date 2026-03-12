@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Password Generator | Free Password Checker</title>
+    <link rel="stylesheet" href="../style.css"> 
+    <style>
 
+        .generator-box {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .output-display {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+        }
+        .controls {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .generate-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .generate-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .ad-container {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #eaeaea;
+            border: 1px dashed #999;
+        }
+    </style>
+</head>
+<body>
+
+    <header style="text-align: center; padding: 20px;">
+        <a href="../index.html">
+            <img src="../logo.png" alt="Free Password Checker" style="max-width: 200px;">
+        </a>
+        <nav style="margin-top: 15px;">
+            <a href="../index.html" style="margin-right: 15px;">Strength Checker</a>
+            <a href="index.html" style="font-weight: bold;">Password Generator</a>
+        </nav>
+    </header>
+
+    <div class="ad-container">
+        <p><em>Advertisement</em></p>
+    </div>
+
+    <main class="generator-box">
+        <h2>Generate a Secure Password</h2>
+        <p>Create a strong, completely random password that runs securely in your browser.</p>
+
+        <input type="text" id="passwordOutput" class="output-display" readonly placeholder="Loading generator...">
+
+        <div class="controls">
+            <label for="lengthSlider"><strong>Password Length:</strong> <span id="lengthDisplay">16</span> characters</label>
+            <input type="range" id="lengthSlider" min="8" max="64" value="16" style="width: 100%; margin: 10px 0;">
+            
+            <br><br>
+
+            <label>
+                <input type="checkbox" id="excludeAmbiguous" checked> 
+                Exclude Ambiguous Characters (I, l, 1, O, 0)
+            </label>
+        </div>
+
+        <button id="generateBtn" class="generate-btn" disabled>Initializing WebAssembly...</button>
+    </main>
+
+    <div class="ad-container">
+        <p><em>Advertisement</em></p>
+    </div>
+
+    <script src="passgen.js"></script>
+    <script>
+        const lengthSlider = document.getElementById('lengthSlider');
+        const lengthDisplay = document.getElementById('lengthDisplay');
+        const excludeAmbiguous = document.getElementById('excludeAmbiguous');
+        const generateBtn = document.getElementById('generateBtn');
+        const passwordOutput = document.getElementById('passwordOutput');
+
+        lengthSlider.addEventListener('input', (e) => {
+            lengthDisplay.textContent = e.target.value;
+        });
+
+        let passGenInstance = null;
+
+        createPassgenModule().then((Module) => {
+            passGenInstance = new Module.PasswordGenerator();
+            
+            generateBtn.disabled = false;
+            generateBtn.textContent = "Generate New Password";
+
+            generateNewPassword();
+        });
+
+        function generateNewPassword() {
+            if (!passGenInstance) return;
+
+            const length = parseInt(lengthSlider.value, 10);
+            const exclude = excludeAmbiguous.checked;
+
+            try {
+                const newPassword = passGenInstance.generate(length, exclude);
+                passwordOutput.value = newPassword;
+            } catch (error) {
+                console.error("C++ Generator Error:", error);
+                passwordOutput.value = "Error generating password.";
+            }
+        }
+
+        generateBtn.addEventListener('click', generateNewPassword);
+    </script>
+
+</body>
+</html>
