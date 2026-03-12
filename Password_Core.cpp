@@ -319,17 +319,24 @@ double calculateDictionaryPenalty(string_view s, const vector<string>& commonDic
 
     string lowerS = toLowerStr(s);
 
+    vector<bool> covered(s.length(), false); 
+
     for (const auto& word : commonDict) {
         if (word.length() < 3) continue;
 
         size_t pos = lowerS.find(word);
         while (pos != string::npos) {
-            lowerS.replace(pos, word.length(), string(word.length(), '*'));
-            pos = lowerS.find(word);
+
+            for (size_t i = 0; i < word.length(); ++i) {
+                covered[pos + i] = true;
+            }
+
+            pos = lowerS.find(word, pos + word.length());
         }
     }
 
-    int coveredChars = static_cast<int>(count(lowerS.begin(), lowerS.end(), '*'));
+    int coveredChars = static_cast<int>(count(covered.begin(), covered.end(), true));
+    
     return static_cast<double>(coveredChars) / static_cast<double>(s.length());
 }
 
