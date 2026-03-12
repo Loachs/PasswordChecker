@@ -6,7 +6,7 @@
   <title>Password Strength Tester</title>
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337914085760084" crossorigin="anonymous"></script>
-  
+
   <style>
     :root {
       --primary: #218481;      
@@ -432,9 +432,7 @@
     function updateBar(score) {
       strengthBar.style.width = score + "%";
       
-      // Update progress bar color and the environmental glow of the main box
       if (score === 0 && !input.value) {
-        // Empty state
         mainBox.style.setProperty('--glow-color', 'rgba(33, 132, 129, 0.05)');
       } else if (score < 25) {
         strengthBar.style.backgroundColor = "#ef4444"; // Red
@@ -495,11 +493,9 @@
 
     let timeout;
     input.addEventListener("input", () => {
-      // 1. Instant lighting flash reaction
       mainBox.classList.add("flash");
       setTimeout(() => mainBox.classList.remove("flash"), 150);
 
-      // 2. Debounce the heavy WebAssembly math
       clearTimeout(timeout);
       timeout = setTimeout(analyze, 150);
     });
