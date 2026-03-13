@@ -45,13 +45,58 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       max-width: 700px;
-      margin: 60px auto;
+      margin: 20px auto 60px auto; /* Adjusted top margin for the nav bar */
       padding: 20px;
       background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.5;
     }
+
+    /* --- NEW CSS FOR NAVIGATION & BUTTON --- */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .nav-links a.active {
+      color: #ffffff;
+      background: rgba(33, 132, 129, 0.2);
+      border-color: var(--primary);
+    }
+    .nav-links a:hover:not(.active) {
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+    
+    .cta-btn {
+      display: block;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-top: 15px;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover {
+      background: #1a6b68;
+    }
+    /* --------------------------------------- */
 
     .box {
       background: var(--card-bg);
@@ -68,71 +113,16 @@
       --glow-spread: 60px;
     }
 
-    h1 {
-      margin-top: 0;
-      font-size: 24px;
-      color: #ffffff;
-      margin-bottom: 4px;
-    }
-
-    h2 {
-      margin-top: 0;
-      font-size: 20px;
-      color: #ffffff;
-    }
-
-    h3 {
-      font-size: 16px;
-      color: #4fd1c5;
-      margin-bottom: 4px;
-    }
-
-    .small {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .hero-logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 16px;
-      object-fit: cover;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-      margin-bottom: 12px;
-    }
-
-    .trust-box {
-      margin-top: 12px;
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-      background: var(--trust-bg);
-      padding: 12px 16px;
-      border-radius: 10px;
-      border: 1px solid var(--trust-border);
-      color: var(--trust-text);
-      font-size: 14px;
-    }
-
-    .trust-badges {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .input-wrapper {
-      position: relative;
-      margin-top: 16px;
-    }
-
+    h1 { margin-top: 0; font-size: 24px; color: #ffffff; margin-bottom: 4px; }
+    h2 { margin-top: 0; font-size: 20px; color: #ffffff; }
+    h3 { font-size: 16px; color: #4fd1c5; margin-bottom: 4px; }
+    .small { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+    .hero { text-align: center; margin-bottom: 24px; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); margin-bottom: 12px; }
+    .trust-box { margin-top: 12px; max-width: 540px; margin-left: auto; margin-right: auto; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 14px; }
+    .trust-badges { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .input-wrapper { position: relative; margin-top: 16px; }
+    
     input[type="password"], input[type="text"] {
       width: 100%;
       padding: 14px 48px 14px 14px;
@@ -146,272 +136,54 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(33, 132, 129, 0.25);
-    }
-
-    .toggle-btn {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: bold;
-      transition: color 0.2s;
-    }
-
-    .toggle-btn:hover {
-      color: var(--primary);
-    }
-
-    .strength-bar-bg {
-      height: 8px;
-      background: #2a233f;
-      border-radius: 99px;
-      margin-top: 16px;
-      overflow: hidden;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    }
-
-    .strength-bar-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: 99px;
-      transition: width 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease;
-      background-color: #ef4444;
-    }
-
-    .result {
-      margin-top: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #ffffff;
-    }
-
-    .controls {
-      display: flex;
-      gap: 16px;
-      margin-top: 24px;
-      background: rgba(0, 0, 0, 0.15);
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .control-group label {
-      font-size: 12px;
-      font-weight: bold;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    select {
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text-main);
-      font-size: 14px;
-      outline: none;
-    }
-
-    select:focus {
-      border-color: var(--primary);
-    }
-
-    .section {
-      margin-top: 28px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .grid-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .stat-box {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .stat-value {
-      font-size: 16px;
-      font-weight: 600;
-      color: #ffffff;
-      margin-top: 4px;
-    }
-
-    ul {
-      padding-left: 20px;
-      color: var(--text-main);
-    }
-
-    li {
-      margin-bottom: 6px;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: rgba(33, 132, 129, 0.15);
-      color: #4fd1c5;
-      font-size: 13px;
-      font-weight: 600;
-      margin-right: 8px;
-      margin-top: 8px;
-      border: 1px solid rgba(33, 132, 129, 0.3);
-    }
-
-    .badge.warning {
-      background: rgba(239, 68, 68, 0.15);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .metric-box {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(33, 132, 129, 0.15);
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-size: 18px;
-      font-weight: bold;
-      color: #4fd1c5;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    .charset-visualizer {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .char-badge {
-      padding: 4px 12px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #6b7280;
-      font-size: 12px;
-      font-family: monospace;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s ease;
-    }
-
-    .char-badge.active {
-      background: rgba(33, 132, 129, 0.2);
-      color: #4fd1c5;
-      border-color: #218481;
-      box-shadow: 0 0 8px rgba(33, 132, 129, 0.4);
-    }
-
-    .ad-wrapper {
-      text-align: center;
-      margin-top: 24px;
-    }
-
-    .ad-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-
-    .ad-slot {
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      border: 1px dashed var(--border);
-      padding: 20px;
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      transition: border-color 0.2s;
-    }
-
-    .ad-slot:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(33, 132, 129, 0.25); }
+    .toggle-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; font-weight: bold; transition: color 0.2s; }
+    .toggle-btn:hover { color: var(--primary); }
+    .strength-bar-bg { height: 8px; background: #2a233f; border-radius: 99px; margin-top: 16px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
+    .strength-bar-fill { height: 100%; width: 0%; border-radius: 99px; transition: width 0.4s ease, background-color 0.4s ease, box-shadow 0.4s ease; background-color: #ef4444; }
+    .result { margin-top: 12px; font-size: 20px; font-weight: bold; color: #ffffff; }
+    .controls { display: flex; gap: 16px; margin-top: 24px; background: rgba(0, 0, 0, 0.15); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
+    .control-group { display: flex; flex-direction: column; flex: 1; }
+    .control-group label { font-size: 12px; font-weight: bold; color: var(--text-muted); margin-bottom: 4px; }
+    select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-main); font-size: 14px; outline: none; }
+    select:focus { border-color: var(--primary); }
+    .section { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    .stat-box { background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: bold; text-transform: uppercase; }
+    .stat-value { font-size: 16px; font-weight: 600; color: #ffffff; margin-top: 4px; }
+    ul { padding-left: 20px; color: var(--text-main); }
+    li { margin-bottom: 6px; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 13px; font-weight: 600; margin-right: 8px; margin-top: 8px; border: 1px solid rgba(33, 132, 129, 0.3); }
+    .badge.warning { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .metric-box { background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(33, 132, 129, 0.15); text-align: center; }
+    .metric-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 4px; }
+    .metric-value { font-size: 18px; font-weight: bold; color: #4fd1c5; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .charset-visualizer { display: flex; gap: 8px; margin-top: 12px; justify-content: center; flex-wrap: wrap; }
+    .char-badge { padding: 4px 12px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); color: #6b7280; font-size: 12px; font-family: monospace; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }
+    .char-badge.active { background: rgba(33, 132, 129, 0.2); color: #4fd1c5; border-color: #218481; box-shadow: 0 0 8px rgba(33, 132, 129, 0.4); }
+    .ad-wrapper { text-align: center; margin-top: 24px; }
+    .ad-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .ad-slot { background: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px dashed var(--border); padding: 20px; min-height: 90px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px; transition: border-color 0.2s; }
+    .ad-slot:hover { border-color: rgba(255, 255, 255, 0.2); }
 
     @media (max-width: 600px) {
-      body {
-        margin: 0;
-        padding: 16px;
-      }
-
-      .box {
-        padding: 24px 20px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      .controls {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .grid-stats,
-      .metrics-grid {
-        grid-template-columns: 1fr;
-      }
-
-      input[type="password"], input[type="text"] {
-        font-size: 16px;
-        padding: 12px 48px 12px 12px;
-      }
+      body { margin: 0; padding: 16px; }
+      .box { padding: 24px 20px; }
+      h1 { font-size: 22px; }
+      .controls { flex-direction: column; gap: 12px; }
+      .grid-stats, .metrics-grid { grid-template-columns: 1fr; }
+      input[type="password"], input[type="text"] { font-size: 16px; padding: 12px 48px 12px 12px; }
     }
   </style>
 </head>
 <body>
+
+  <nav class="nav-links">
+    <a href="index.html" class="active">Strength Checker</a>
+    <a href="password-generator/index.html">Secure Generator</a>
+  </nav>
 
   <div class="box" id="mainBox">
 
@@ -517,6 +289,8 @@
     <div class="section">
       <div><strong>Feedback</strong></div>
       <ul id="feedbackList"></ul>
+      
+      <a href="password-generator/index.html" class="cta-btn">Create a Stronger Password</a>
     </div>
   </div>
 
