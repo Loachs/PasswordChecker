@@ -67,7 +67,6 @@
     h2 { color: #ffffff; margin-top: 35px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 22px; }
     h3 { color: var(--accent); margin-top: 25px; font-size: 18px; }
     
-    /* --- MATH BLOCK --- */
     .math-block {
       background: #0d0a15;
       padding: 25px;
@@ -92,7 +91,6 @@
       text-transform: uppercase;
     }
 
-    /* --- TABLE SCROLLING FOR IPHONE --- */
     .table-container {
       width: 100%;
       overflow-x: auto;
@@ -102,7 +100,7 @@
 
     .comparison-table {
       width: 100%;
-      min-width: 500px; /* Ensures table doesn't squash too much */
+      min-width: 500px;
       border-collapse: collapse;
       background: rgba(0,0,0,0.2);
       border-radius: 10px;
@@ -115,18 +113,43 @@
     }
     .comparison-table th { background: rgba(33, 132, 129, 0.2); color: var(--accent); }
 
-    .source-links {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+    /* --- BOTTOM NAVIGATION GRID --- */
+    .next-steps-title {
+      margin-top: 60px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-align: center;
     }
-    .source-links a {
-      color: var(--accent);
+
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .next-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
       text-decoration: none;
-      display: block;
-      margin-bottom: 12px;
-      font-size: 14px;
+      text-align: center;
+      transition: all 0.2s;
     }
+
+    .next-card:hover {
+      background: rgba(33, 132, 129, 0.1);
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .next-emoji { font-size: 20px; display: block; margin-bottom: 8px; }
+    .next-text { color: #ffffff; font-weight: 600; font-size: 12px; display: block; line-height: 1.2; }
 
     .btn {
       display: block;
@@ -137,16 +160,14 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
-      margin-top: 30px;
     }
 
-    /* --- MOBILE OPTIMIZATIONS --- */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      .next-steps-grid { grid-template-columns: 1fr; }
+      .next-card { display: flex; align-items: center; gap: 15px; text-align: left; padding: 12px; }
+      .next-emoji { margin-bottom: 0; }
       .content-box { padding: 25px 15px; }
       h1 { font-size: 26px; }
-      h2 { font-size: 20px; }
-      .math-block { font-size: 16px; padding: 30px 15px 20px 15px; }
-      .math-block div { text-align: center !important; font-size: 13px; margin-top: 10px; }
     }
   </style>
 </head>
@@ -164,13 +185,13 @@
     <p>For years, we were taught that a "strong" password had to be short and full of complex symbols. Modern math proves that <strong>length is far more powerful</strong> than character variety.</p>
 
     <h2>The Entropy Equation</h2>
-    <p>Password strength is measured in "bits of entropy." As you can see in the formula below, adding a single character to the length (L) has an exponential impact compared to just adding more character types (R).</p>
+    <p>Password strength is measured in "bits of entropy." Adding a single character to the length (L) has an exponential impact compared to just adding more character types (R).</p>
     
     <div class="math-block">
       <div class="math-label">The Formula</div>
       <strong>E = L × log₂(R)</strong>
       <br>
-      <div style="text-align: left; display: inline-block; font-family: sans-serif; margin-top: 15px;">
+      <div style="text-align: left; display: inline-block; font-family: sans-serif; margin-top: 15px; font-size: 14px;">
         • <strong>E</strong> = Total Entropy (Strength)<br>
         • <strong>L</strong> = Length of Password<br>
         • <strong>R</strong> = Number of possible characters
@@ -180,7 +201,7 @@
     
 
     <h2>Brute Force Reality</h2>
-    <p>Hackers use GPUs that can test billions of combinations per second. Here is how different styles of passwords hold up against a modern brute-force attack:</p>
+    <p>Hackers use GPUs that can test billions of combinations per second. Here is how different styles hold up against a modern brute-force attack:</p>
     
     <div class="table-container">
       <table class="comparison-table">
@@ -203,7 +224,7 @@
             <td>Human Pattern</td>
             <td><code>Summer2024!</code></td>
             <td>11</td>
-            <td><strong>< 1 Day</strong></td>
+            <td><strong>&lt; 1 Day</strong></td>
           </tr>
           <tr>
             <td>Long Passphrase</td>
@@ -216,13 +237,22 @@
     </div>
 
     <h2>Why Passphrases Win</h2>
-    <p>A "Passphrase" uses 4-5 random words. They are incredibly long (high entropy) but much easier for the human brain to remember than a string of random gibberish like <code>j%9!Lp#2</code>.</p>
+    <p>A "Passphrase" uses random words. They are incredibly long but much easier for humans to remember than strings like <code>j%9!Lp#2</code>.</p>
 
-    <div class="source-links">
-      <h3>Credible Resources</h3>
-      <a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank">→ NIST: Official Password Standards</a>
-      <a href="https://xkcd.com/936/" target="_blank">→ XKCD: The "Passphrase" Explanation</a>
-      <a href="https://www.enisa.europa.eu/publications/enisa-report-password-policy-guidelines" target="_blank">→ ENISA: European Security Guidelines</a>
+    <div class="next-steps-title">Keep Learning</div>
+    <div class="next-steps-grid">
+      <a href="../data-breaches/index.html" class="next-card">
+        <span class="next-emoji">🔓</span>
+        <span class="next-text">How Breaches Work</span>
+      </a>
+      <a href="../password-managers/index.html" class="next-card">
+        <span class="next-emoji">🔑</span>
+        <span class="next-text">Password Managers</span>
+      </a>
+      <a href="../safety-of-checkers/index.html" class="next-card">
+        <span class="next-emoji">🛡️</span>
+        <span class="next-text">Is This Site Safe?</span>
+      </a>
     </div>
 
     <a href="../index.html" class="btn">Test Your Password Now</a>
