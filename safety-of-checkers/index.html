@@ -1,1 +1,237 @@
-stuff...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Is This Site Safe? | Local-First Security Architecture</title>
+  
+  <meta name="description" content="Learn how our password checker works entirely in your browser. Open source and privacy-focused." />
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+
+  <style>
+    :root {
+      --primary: #218481;
+      --bg-top: #151122;
+      --bg-bottom: #1a142c;
+      --card-bg: #1f1a30;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #352d4d;
+      --accent: #4fd1c5; 
+      --safe-green: #22c55e;
+      --github-gray: #24292e;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 15px;
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* --- NAVIGATION --- */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 30px 0;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: #ffffff; border-color: var(--primary); }
+
+    /* --- CONTENT BOX --- */
+    .content-box {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 { font-size: 32px; color: #ffffff; margin-bottom: 10px; text-align: center; line-height: 1.2; }
+    .subtitle { text-align: center; color: var(--safe-green); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; }
+
+    h2 { color: #ffffff; margin-top: 35px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 22px; }
+    
+    /* --- GITHUB CARD --- */
+    .github-banner {
+      background: var(--github-gray);
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 30px 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .github-banner:hover { transform: scale(1.02); border-color: var(--accent); }
+    .github-icon { font-size: 40px; }
+    .github-text h3 { margin: 0; color: #fff; font-size: 18px; }
+    .github-text p { margin: 5px 0 0 0; color: #adb5bd; font-size: 14px; }
+
+    /* --- SECURITY STACK --- */
+    .security-stack {
+      background: rgba(0,0,0,0.3);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin: 30px 0;
+    }
+    .stack-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .stack-item:last-child { border: none; margin-bottom: 0; padding-bottom: 0; }
+    .stack-icon { font-size: 24px; min-width: 40px; text-align: center; }
+    .stack-title { font-weight: bold; color: var(--accent); display: block; font-size: 14px; }
+    .stack-desc { font-size: 13px; color: var(--text-muted); }
+
+    /* --- BOTTOM NAVIGATION --- */
+    .next-steps-title {
+      margin-top: 60px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .next-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .next-card:hover { background: rgba(33, 132, 129, 0.1); border-color: var(--primary); transform: translateY(-3px); }
+    .next-emoji { font-size: 20px; display: block; margin-bottom: 8px; }
+    .next-text { color: #ffffff; font-weight: 600; font-size: 12px; display: block; line-height: 1.2; }
+
+    .btn {
+      display: block;
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      padding: 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .next-steps-grid { grid-template-columns: 1fr; }
+      .next-card, .github-banner { display: flex; align-items: center; gap: 15px; text-align: left; padding: 15px; }
+      .next-emoji { margin-bottom: 0; }
+      .github-icon { font-size: 30px; }
+      .content-box { padding: 25px 15px; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-links">
+    <a href="../index.html">← Checker</a>
+    <a href="../password-generator/index.html">Generator</a>
+  </nav>
+
+  <div class="content-box">
+    <h1>Is This Site Safe?</h1>
+    <p class="subtitle">100% Client-Side Protection</p>
+
+    <p>Entering a password into a website feels wrong. Most tools send your data to a server to be processed, which creates a risk. <strong>Free Password Checker works differently.</strong></p>
+
+    <a href="https://github.com/Loachs/PasswordChecker" target="_blank" class="github-banner">
+      <div class="github-icon">💻</div>
+      <div class="github-text">
+        <h3>View the Source Code</h3>
+        <p>Our code is open source. Audit the logic yourself on GitHub.</p>
+      </div>
+    </a>
+
+    <h2>The Zero-Knowledge Architecture</h2>
+    <p>Our tools are built on a "Local-First" philosophy. We use <strong>WebAssembly (Wasm)</strong> to run a heavy-duty security engine inside your browser, not on our server.</p>
+
+    <div class="security-stack">
+      <div class="stack-item">
+        <span class="stack-icon">🏗️</span>
+        <div>
+          <span class="stack-title">Client-Side Only</span>
+          <span class="stack-desc">The logic lives in your browser. The characters you type never leave your device's RAM.</span>
+        </div>
+      </div>
+      <div class="stack-item">
+        <span class="stack-icon">🚫</span>
+        <div>
+          <span class="stack-title">No Logs, No Cookies</span>
+          <span class="stack-desc">We don't track what you type. There is no database on the backend to "leak."</span>
+        </div>
+      </div>
+      <div class="stack-item">
+        <span class="stack-icon">🔒</span>
+        <div>
+          <span class="stack-title">W3C Security Standards</span>
+          <span class="stack-desc">We use the browser's native Web Crypto API for secure, hardware-level randomness.</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>How to Verify</h2>
+    <ol>
+      <li>Open your browser's <strong>Network Tab</strong> (F12).</li>
+      <li>Type a password into the tool.</li>
+      <li>Notice that <strong>zero requests</strong> are made.</li>
+      <li>Try it with your <strong>Wi-Fi turned off</strong>—it works perfectly.</li>
+    </ol>
+
+    <div class="next-steps-title">Keep Learning</div>
+    <div class="next-steps-grid">
+      <a href="../length-vs-complexity/index.html" class="next-card">
+        <span class="next-emoji">📏</span>
+        <span class="next-text">Length vs. Complexity</span>
+      </a>
+      <a href="../data-breaches/index.html" class="next-card">
+        <span class="next-emoji">🔓</span>
+        <span class="next-text">How Breaches Work</span>
+      </a>
+      <a href="../password-managers/index.html" class="next-card">
+        <span class="next-emoji">🔑</span>
+        <span class="next-text">Password Managers</span>
+      </a>
+    </div>
+
+    <a href="../index.html" class="btn">Return to Checker</a>
+  </div>
+
+</body>
+</html>
