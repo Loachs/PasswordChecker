@@ -1,139 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Password Generator | Free Password Checker</title>
-    <link rel="stylesheet" href="../style.css"> 
-    <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Password Generator | Free Password Checker</title>
 
-        .generator-box {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .output-display {
-            width: 100%;
-            padding: 15px;
-            font-size: 1.5em;
-            text-align: center;
-            margin: 20px 0;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-            background: #fff;
-        }
-        .controls {
-            text-align: left;
-            margin: 20px 0;
-        }
-        .generate-btn {
-            padding: 15px 30px;
-            font-size: 1.2em;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .generate-btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        .ad-container {
-            text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: #eaeaea;
-            border: 1px dashed #999;
-        }
-    </style>
+  <meta name="title" content="Secure Password Generator | 100% Local" />
+  <meta name="description" content="Generate highly secure, cryptographically random passwords instantly in your browser. No data leaves your device." />
+  
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337914085760084" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --primary: #218481;
+      --bg-top: #151122;
+      --bg-bottom: #1a142c;
+      --card-bg: #1f1a30;
+      --input-bg: #0d0a15;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #352d4d;
+      --trust-bg: rgba(34, 197, 94, 0.08);
+      --trust-border: rgba(34, 197, 94, 0.25);
+      --trust-text: #c7f9e5;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 700px;
+      margin: 20px auto 60px auto;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    /* --- NAVIGATION --- */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 24px;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .nav-links a.active {
+      color: #ffffff;
+      background: rgba(33, 132, 129, 0.2);
+      border-color: var(--primary);
+    }
+    .nav-links a:hover:not(.active) {
+      color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    /* --- LAYOUT BOXES --- */
+    .box {
+      background: var(--card-bg);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 { margin-top: 0; font-size: 24px; color: #ffffff; margin-bottom: 4px; text-align: center; }
+    h2 { margin-top: 0; font-size: 20px; color: #ffffff; }
+    .hero { text-align: center; margin-bottom: 24px; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); margin-bottom: 12px; }
+    
+    .trust-box { margin-top: 12px; max-width: 540px; margin-left: auto; margin-right: auto; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 14px; }
+    .trust-badges { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 13px; font-weight: 600; margin-right: 8px; margin-top: 8px; border: 1px solid rgba(33, 132, 129, 0.3); }
+
+    /* --- INPUT & BUTTONS --- */
+    .input-wrapper { position: relative; margin-top: 24px; }
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 80px 16px 16px;
+      font-size: 20px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--input-bg);
+      color: #4fd1c5;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-sizing: border-box;
+      outline: none;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    
+    .toggle-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(33, 132, 129, 0.2);
+      border: 1px solid var(--primary);
+      color: #4fd1c5;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .toggle-btn:hover { background: var(--primary); color: white; }
+
+    /* --- GENERATOR CONTROLS --- */
+    .controls { background: rgba(0, 0, 0, 0.15); padding: 24px; border-radius: 10px; border: 1px solid var(--border); margin-top: 24px; }
+    .slider-header { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-weight: bold; margin-bottom: 12px; font-size: 14px; }
+    .slider-value { font-size: 20px; color: #4fd1c5; background: rgba(33, 132, 129, 0.15); padding: 4px 12px; border-radius: 6px; border: 1px solid rgba(33, 132, 129, 0.3); }
+    
+    input[type="range"] {
+      width: 100%;
+      margin-bottom: 24px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .checkbox-container input { margin-right: 12px; width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+
+    .generate-btn {
+      display: block;
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 24px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 15px rgba(33, 132, 129, 0.3);
+    }
+    .generate-btn:hover:not(:disabled) { background: #1a6b68; transform: translateY(-1px); }
+    .generate-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 2px 5px rgba(33, 132, 129, 0.3); }
+    .generate-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
+
+    /* --- AD SPACE --- */
+    .ad-wrapper { text-align: center; margin-top: 24px; }
+    .ad-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .ad-slot { background: rgba(255, 255, 255, 0.02); border-radius: 12px; border: 1px dashed var(--border); padding: 20px; min-height: 90px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 14px; transition: border-color 0.2s; }
+    .ad-slot:hover { border-color: rgba(255, 255, 255, 0.2); }
+
+    @media (max-width: 600px) {
+      body { margin: 0; padding: 16px; }
+      .box { padding: 24px 20px; }
+      input[type="text"] { font-size: 16px; padding: 14px 70px 14px 10px; }
+    }
+  </style>
 </head>
 <body>
 
-    <header style="text-align: center; padding: 20px;">
-        <a href="../index.html">
-            <img src="../logo.png" alt="Free Password Checker" style="max-width: 200px;">
-        </a>
-        <nav style="margin-top: 15px;">
-            <a href="../index.html" style="margin-right: 15px;">Strength Checker</a>
-            <a href="index.html" style="font-weight: bold;">Password Generator</a>
-        </nav>
-    </header>
+  <nav class="nav-links">
+    <a href="../index.html">Strength Checker</a>
+    <a href="index.html" class="active">Secure Generator</a>
+  </nav>
 
-    <div class="ad-container">
-        <p><em>Advertisement</em></p>
+  <div class="box">
+    <div class="hero">
+      <img src="../logo.jpg" alt="Free Password Checker Logo" class="hero-logo" />
+      <h1>Secure Password Generator</h1>
+      
+      <div class="trust-box">
+        ⚙️ Passwords are mathematically generated <strong>directly on your device</strong> using Cryptographically Secure Pseudo-Random Number Generation (CSPRNG).
+      </div>
+      
+      <div class="trust-badges">
+        <span class="badge">Hardware Entropy</span>
+        <span class="badge">Offline Generation</span>
+      </div>
     </div>
 
-    <main class="generator-box">
-        <h2>Generate a Secure Password</h2>
-        <p>Create a strong, completely random password that runs securely in your browser.</p>
-
-        <input type="text" id="passwordOutput" class="output-display" readonly placeholder="Loading generator...">
-
-        <div class="controls">
-            <label for="lengthSlider"><strong>Password Length:</strong> <span id="lengthDisplay">16</span> characters</label>
-            <input type="range" id="lengthSlider" min="8" max="64" value="16" style="width: 100%; margin: 10px 0;">
-            
-            <br><br>
-
-            <label>
-                <input type="checkbox" id="excludeAmbiguous" checked> 
-                Exclude Ambiguous Characters (I, l, 1, O, 0)
-            </label>
-        </div>
-
-        <button id="generateBtn" class="generate-btn" disabled>Initializing WebAssembly...</button>
-    </main>
-
-    <div class="ad-container">
-        <p><em>Advertisement</em></p>
+    <div class="input-wrapper">
+      <input type="text" id="passwordOutput" readonly placeholder="Loading generator engine..." />
+      <button class="toggle-btn" id="copyBtn">COPY</button>
     </div>
 
-    <script src="passgen.js"></script>
-    <script>
-        const lengthSlider = document.getElementById('lengthSlider');
-        const lengthDisplay = document.getElementById('lengthDisplay');
-        const excludeAmbiguous = document.getElementById('excludeAmbiguous');
-        const generateBtn = document.getElementById('generateBtn');
-        const passwordOutput = document.getElementById('passwordOutput');
+    <div class="controls">
+      <div class="slider-header">
+        <span>Password Length</span>
+        <span class="slider-value" id="lengthDisplay">16</span>
+      </div>
+      <input type="range" id="lengthSlider" min="8" max="64" value="16">
+      
+      <label class="checkbox-container">
+        <input type="checkbox" id="excludeAmbiguous" checked> 
+        <span>Exclude Ambiguous Characters (I, l, 1, O, 0)</span>
+      </label>
+    </div>
 
-        lengthSlider.addEventListener('input', (e) => {
-            lengthDisplay.textContent = e.target.value;
-        });
+    <button id="generateBtn" class="generate-btn" disabled>Initializing Engine...</button>
+  </div>
 
-        let passGenInstance = null;
+  <div class="ad-wrapper">
+    <div class="ad-label">Advertisement</div>
+    <div class="ad-slot" id="adContainer">
+      Ad Space Ready
+    </div>
+  </div>
 
-        createPassgenModule().then((Module) => {
-            passGenInstance = new Module.PasswordGenerator();
+  <script src="passgen.js"></script>
+  
+  <script>
+    const lengthSlider = document.getElementById('lengthSlider');
+    const lengthDisplay = document.getElementById('lengthDisplay');
+    const excludeAmbiguous = document.getElementById('excludeAmbiguous');
+    const generateBtn = document.getElementById('generateBtn');
+    const passwordOutput = document.getElementById('passwordOutput');
+    const copyBtn = document.getElementById('copyBtn');
+
+    // Update the visual number when the slider moves
+    lengthSlider.addEventListener('input', (e) => {
+        lengthDisplay.textContent = e.target.value;
+    });
+
+    let passGenInstance = null;
+
+    // Initialize the WebAssembly module
+    createPassgenModule().then((Module) => {
+        passGenInstance = new Module.PasswordGenerator();
+        
+        generateBtn.disabled = false;
+        generateBtn.textContent = "Generate New Password";
+        
+        // Auto-generate the first password as soon as the engine is ready
+        generateNewPassword();
+    });
+
+    function generateNewPassword() {
+        if (!passGenInstance) return;
+        
+        const length = parseInt(lengthSlider.value, 10);
+        const exclude = excludeAmbiguous.checked;
+
+        try {
+            // Call the C++ generator logic
+            passwordOutput.value = passGenInstance.generate(length, exclude);
             
-            generateBtn.disabled = false;
-            generateBtn.textContent = "Generate New Password";
-
-            generateNewPassword();
-        });
-
-        function generateNewPassword() {
-            if (!passGenInstance) return;
-
-            const length = parseInt(lengthSlider.value, 10);
-            const exclude = excludeAmbiguous.checked;
-
-            try {
-                const newPassword = passGenInstance.generate(length, exclude);
-                passwordOutput.value = newPassword;
-            } catch (error) {
-                console.error("C++ Generator Error:", error);
-                passwordOutput.value = "Error generating password.";
-            }
+            // Reset the copy button visually
+            copyBtn.textContent = "COPY";
+            copyBtn.style.background = "rgba(33, 132, 129, 0.2)";
+            copyBtn.style.color = "#4fd1c5";
+        } catch (error) {
+            console.error("Generator Error:", error);
+            passwordOutput.value = "Error generating password.";
         }
+    }
 
-        generateBtn.addEventListener('click', generateNewPassword);
-    </script>
+    // Bind the generate button
+    generateBtn.addEventListener('click', generateNewPassword);
 
+    // COPY TO CLIPBOARD FUNCTIONALITY
+    copyBtn.addEventListener('click', () => {
+        if (!passwordOutput.value) return;
+        
+        navigator.clipboard.writeText(passwordOutput.value).then(() => {
+            // Visual feedback that it copied successfully
+            copyBtn.textContent = "COPIED!";
+            copyBtn.style.background = "#218481"; 
+            copyBtn.style.color = "white";
+        }).catch(err => {
+            console.error('Failed to copy to clipboard: ', err);
+            copyBtn.textContent = "ERROR";
+        });
+    });
+  </script>
 </body>
 </html>
