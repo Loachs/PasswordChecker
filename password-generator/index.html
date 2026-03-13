@@ -167,7 +167,7 @@
     .generate-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 2px 5px rgba(33, 132, 129, 0.3); }
     .generate-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
-    /* --- KNOWLEDGE BASE GRID --- */
+    /* --- UNIFIED KNOWLEDGE BASE GRID --- */
     .section-title {
       margin-top: 40px;
       margin-bottom: 16px;
@@ -266,28 +266,28 @@
 
   <div class="section-title">Security Knowledge Base</div>
   <div class="guides-grid">
-    <a href="../index.html" class="guide-card">
-      <div class="guide-icon">🔍</div>
-      <div class="guide-title">Test This Password</div>
-      <p class="guide-hook">Curious how long it would take a supercomputer to crack your new password? Run it through our local analyzer.</p>
+    <a href="../length-vs-complexity.html" class="guide-card">
+      <div class="guide-icon">📏</div>
+      <div class="guide-title">Length vs. Complexity</div>
+      <p class="guide-hook">Think 1234!@# is safe? See why a 16-character phrase is actually 1,000x harder for a GPU to crack.</p>
     </a>
 
     <a href="../data-breaches.html" class="guide-card">
       <div class="guide-icon">🔓</div>
       <div class="guide-title">How Breaches Work</div>
-      <p class="guide-hook">Hackers don't guess passwords anymore; they steal the whole database. Learn why "password reuse" is your #1 risk.</p>
+      <p class="guide-hook">Hackers don't guess your password; they steal the whole database. Learn why "password reuse" is your #1 risk.</p>
     </a>
 
     <a href="../password-managers.html" class="guide-card">
       <div class="guide-icon">🔑</div>
       <div class="guide-title">The Manager Secret</div>
-      <p class="guide-hook">Generated a complex password but can't remember it? Discover why a password manager is a non-negotiable tool.</p>
+      <p class="guide-hook">Stop stressing about memory. Discover the one tool that makes "Uncrackable" passwords easy to manage.</p>
     </a>
 
     <a href="../safety-of-checkers.html" class="guide-card">
       <div class="guide-icon">🛡️</div>
-      <div class="guide-title">Is This Generator Safe?</div>
-      <p class="guide-hook">Worried about us seeing your passwords? Learn how our CSPRNG engine works entirely inside your browser.</p>
+      <div class="guide-title">Is This Site Safe?</div>
+      <p class="guide-hook">Curious how we check your password without seeing it? Learn about the local WebAssembly tech protecting you.</p>
     </a>
   </div>
 
@@ -318,7 +318,6 @@
     function generateNewPassword() {
         if (!passGenInstance) return;
         
-        // Add a visual flash effect
         mainBox.classList.add("flash");
         setTimeout(() => mainBox.classList.remove("flash"), 150);
 
