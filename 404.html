@@ -116,8 +116,15 @@
       <div class="terminal-line">> ACTION: <span>REROUTING_TO_SECURE_ZONE...</span></div>
     </div>
 
-    <a href="index.html" class="home-btn">Return to Secure Zone</a>
+    <a href="/" class="home-btn">Return to Secure Zone</a>
   </div>
+
+  <script>
+  // Optional: Auto-redirect to home after 10 seconds
+  setTimeout(() => {
+    window.location.href = "/";
+  }, 10000);
+</script>
 
 </body>
 </html>
