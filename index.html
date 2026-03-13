@@ -294,51 +294,106 @@
     </div>
   </div>
 
-  <div class="ad-wrapper">
-    <div class="ad-label">Advertisement</div>
-    <div class="ad-slot" id="adContainer">
-      Ad Space Ready
-    </div>
-  </div>
+  <div class="section-title">Security Knowledge Base</div>
+<div class="guides-grid">
+  <a href="length-vs-complexity.html" class="guide-card">
+    <div class="guide-icon">📏</div>
+    <div class="guide-title">Length vs. Complexity</div>
+    <p class="guide-hook">Think 1234!@# is safe? See why a 16-character phrase is actually 1,000x harder for a GPU to crack.</p>
+  </a>
 
-  <div class="box" style="margin-top: 24px; text-align: left;">
-    <h2>How Password Security Works</h2>
+  <a href="data-breaches.html" class="guide-card">
+    <div class="guide-icon">🔓</div>
+    <div class="guide-title">How Breaches Work</div>
+    <p class="guide-hook">Hackers don't guess your password; they steal the whole database. Learn why "password reuse" is your #1 risk.</p>
+  </a>
 
-    <h3>What makes a password strong?</h3>
-    <p class="small" style="margin-top: 0; margin-bottom: 16px;">
-      Length is mathematically far more important than complexity.
-      A 16-character phrase made of normal dictionary words is exponentially
-      harder for a computer to crack than a short 8-character password
-      packed with random symbols.
-    </p>
+  <a href="password-managers.html" class="guide-card">
+    <div class="guide-icon">🔑</div>
+    <div class="guide-title">The Manager Secret</div>
+    <p class="guide-hook">Stop stressing about memory. Discover the one tool that makes "Uncrackable" passwords easy to manage.</p>
+  </a>
 
-    <h3>What is Password Entropy?</h3>
-    <p class="small" style="margin-top: 0; margin-bottom: 16px;">
-      Entropy is a scientific measurement of how unpredictable your password is,
-      calculated in "bits." Every time you add a character or expand the character
-      pool (mixing lowercase, uppercase, numbers, and symbols), the search space
-      multiplies. An entropy score above 60-70 bits is generally considered
-      highly secure against modern hardware.
-    </p>
+  <a href="safety-of-checkers.html" class="guide-card">
+    <div class="guide-icon">🛡️</div>
+    <div class="guide-title">Is This Site Safe?</div>
+    <p class="guide-hook">Curious how we check your password without seeing it? Learn about the local WebAssembly tech protecting you.</p>
+  </a>
+</div>
 
-    <h3>Online vs. Offline GPU Attacks</h3>
-    <p class="small" style="margin-top: 0; margin-bottom: 16px;">
-      <strong>Online attacks</strong> happen when a bot tries guessing your password
-      directly on a website's login screen. These are slow because servers enforce
-      rate limits and lockouts.
-      <br><br>
-      <strong>Offline GPU attacks</strong> occur after a data breach. Attackers steal
-      password hashes from a company's database, then use powerful hardware to guess
-      huge numbers of combinations locally until they find a match.
-    </p>
+<style>
+  /* --- NEW STYLES FOR HELPFUL CARDS --- */
+  .section-title {
+    margin-top: 40px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
 
-    <h3>Is this password checker safe?</h3>
-    <p class="small" style="margin-top: 0; margin-bottom: 0;">
-      Yes. This tool runs entirely locally using WebAssembly (WASM). Your keystrokes
-      are processed by your browser and are never sent over the internet to any server.
-      You could disconnect from Wi-Fi and it would still work.
-    </p>
-  </div>
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 10px;
+  }
+
+  .guide-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    background: rgba(33, 132, 129, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
+                0 0 15px rgba(33, 132, 129, 0.2);
+  }
+
+  .guide-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .guide-title {
+    font-weight: 800;
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+  }
+
+  .guide-card:hover .guide-title {
+    color: #4fd1c5;
+  }
+
+  .guide-hook {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* Responsive adjustment for mobile */
+  @media (max-width: 500px) {
+    .guides-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 
   <script src="password.js"></script>
   <script>
