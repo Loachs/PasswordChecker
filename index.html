@@ -1,434 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Password Checker – Test Password Strength & Crack Time</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free Password Checker – Test Password Strength & Crack Time</title>
 
-  <meta name="title" content="Free Password Checker | 100% Local Strength Tester" />
-  <meta name="description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
-  <meta name="keywords" content="password checker, password strength, entropy calculator, local password tester, offline crack time" />
-  <meta name="author" content="Free Password Checker" />
+  <meta name="title" content="Free Password Checker | 100% Local Strength Tester" />
+  <meta name="description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
+  <meta name="keywords" content="password checker, password strength, entropy calculator, local password tester, offline crack time" />
+  <meta name="author" content="Free Password Checker" />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.freepasswordchecker.com/" />
-  <meta property="og:title" content="Free Password Checker | 100% Local Strength Tester" />
-  <meta property="og:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
-  <meta property="og:image" content="https://www.freepasswordchecker.com/logo.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.freepasswordchecker.com/" />
+  <meta property="og:title" content="Free Password Checker | 100% Local Strength Tester" />
+  <meta property="og:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
+  <meta property="og:image" content="https://www.freepasswordchecker.com/logo.jpg" />
 
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://www.freepasswordchecker.com/" />
-  <meta property="twitter:title" content="Free Password Checker | 100% Local Strength Tester" />
-  <meta property="twitter:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
-  <meta property="twitter:image" content="https://www.freepasswordchecker.com/logo.jpg" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://www.freepasswordchecker.com/" />
+  <meta property="twitter:title" content="Free Password Checker | 100% Local Strength Tester" />
+  <meta property="twitter:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
+  <meta property="twitter:image" content="https://www.freepasswordchecker.com/logo.jpg" />
 
-  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337914085760084" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8337914085760084" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    :root {
-      --primary: #218481;
-      --bg-top: #0f0d1a;
-      --bg-bottom: #161224;
-      --card-bg: #1f1a30;
-      --input-bg: #0d0a15;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --border: #352d4d;
-      --trust-bg: rgba(34, 197, 94, 0.08);
-      --trust-border: rgba(34, 197, 94, 0.25);
-      --trust-text: #c7f9e5;
-    }
+  <style>
+    :root {
+      --primary: #218481;
+      --bg-top: #0f0d1a;
+      --bg-bottom: #161224;
+      --card-bg: #1f1a30;
+      --input-bg: #0d0a15;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #352d4d;
+      --trust-bg: rgba(34, 197, 94, 0.08);
+      --trust-border: rgba(34, 197, 94, 0.25);
+      --trust-text: #c7f9e5;
+    }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      max-width: 720px;
-      margin: 20px auto 60px auto;
-      padding: 20px;
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
-      background-attachment: fixed;
-      color: var(--text-main);
-      line-height: 1.5;
-    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 720px;
+      margin: 20px auto 60px auto;
+      padding: 20px;
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
 
-    /* Navigation Bar */
-    .nav-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 8px 18px;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      transition: all 0.2s ease;
-    }
-    .nav-links a.active { color: #ffffff; background: var(--primary); border-color: var(--primary); }
-    .nav-links a:hover:not(.active) { color: #ffffff; border-color: var(--text-muted); }
+    /* Navigation Bar */
+    .nav-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .nav-links a.active { color: #ffffff; background: var(--primary); border-color: var(--primary); }
+    .nav-links a:hover:not(.active) { color: #ffffff; border-color: var(--text-muted); }
 
-    .box {
-      background: var(--card-bg);
-      padding: 35px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 var(--glow-spread, 10px) var(--glow-color, rgba(33, 132, 129, 0.05));
-      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .box.flash { --glow-spread: 50px; }
+    .box {
+      background: var(--card-bg);
+      padding: 35px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 var(--glow-spread, 10px) var(--glow-color, rgba(33, 132, 129, 0.05));
+      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .box.flash { --glow-spread: 50px; }
 
-    /* Header & Logo */
-    .hero { text-align: center; margin-bottom: 28px; position: relative; }
-    .hero-logo { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 12px; border: 2px solid var(--border); }
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      background: rgba(0,0,0,0.3);
-      padding: 4px 10px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-    }
-    .status-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
-    .status-dot.online { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    /* Header & Logo */
+    .hero { text-align: center; margin-bottom: 28px; position: relative; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 12px; border: 2px solid var(--border); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .status-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
+    .status-dot.online { background: #10b981; box-shadow: 0 0 8px #10b981; }
 
-    .trust-box { background: var(--trust-bg); padding: 14px; border-radius: 12px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 13.5px; text-align: center; margin-bottom: 20px; }
-    
-    /* Input & Strength */
-    .input-wrapper { position: relative; }
-    input {
-      width: 100%; padding: 16px 50px 16px 16px; font-size: 18px; background: var(--input-bg);
-      color: #ffffff; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none;
-      transition: all 0.2s; font-family: monospace;
-    }
-    input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(33, 132, 129, 0.15); }
-    .toggle-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; }
+    .trust-box { background: var(--trust-bg); padding: 14px; border-radius: 12px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 13.5px; text-align: center; margin-bottom: 20px; }
+    
+    /* Input & Strength - UPDATED FOR IPHONE BUTTON OVERLAP */
+    .input-wrapper { position: relative; }
+    input {
+      width: 100%; 
+      padding: 16px 85px 16px 16px; /* Increased right padding to 85px */
+      font-size: 18px; /* 18px prevents auto-zoom on iOS */
+      background: var(--input-bg);
+      color: #ffffff; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none;
+      transition: all 0.2s; font-family: monospace;
+    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(33, 132, 129, 0.15); }
+    .toggle-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; }
 
-    .strength-bar-bg { height: 6px; background: #2a233f; border-radius: 10px; margin-top: 18px; overflow: hidden; }
-    .strength-bar-fill { height: 100%; width: 0%; transition: width 0.5s ease, background-color 0.5s ease; }
+    .strength-bar-bg { height: 6px; background: #2a233f; border-radius: 10px; margin-top: 18px; overflow: hidden; }
+    .strength-bar-fill { height: 100%; width: 0%; transition: width 0.5s ease, background-color 0.5s ease; }
 
-    /* Controls & Stats */
-    .controls { display: flex; gap: 12px; margin-top: 24px; }
-    .control-group { flex: 1; display: flex; flex-direction: column; }
-    .control-group label { font-size: 11px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
-    select { padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: #fff; font-size: 13px; cursor: pointer; }
+    /* Controls & Stats */
+    .controls { display: flex; gap: 12px; margin-top: 24px; }
+    .control-group { flex: 1; display: flex; flex-direction: column; }
+    .control-group label { font-size: 11px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    select { padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: #fff; font-size: 13px; cursor: pointer; }
 
-    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-    .metric-box { background: rgba(0,0,0,0.2); padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
-    .metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; display: block; }
-    .metric-value { font-size: 18px; font-weight: 800; color: #4fd1c5; font-family: monospace; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+    .metric-box { background: rgba(0,0,0,0.2); padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+    .metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .metric-value { font-size: 18px; font-weight: 800; color: #4fd1c5; font-family: monospace; }
 
-    .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .stat-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; border: 1px solid var(--border); }
-    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
-    .stat-value { font-size: 15px; font-weight: 600; color: #fff; }
+    .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; border: 1px solid var(--border); }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-value { font-size: 15px; font-weight: 600; color: #fff; }
 
-    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(33, 132, 129, 0.1); color: #4fd1c5; font-size: 12px; font-weight: 600; margin: 4px; border: 1px solid rgba(33, 132, 129, 0.2); }
-    .badge.warning { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
-    .char-badge { padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); color: #4b5563; font-size: 12px; font-family: monospace; border: 1px solid transparent; transition: 0.3s; }
-    .char-badge.active { background: rgba(33, 132, 129, 0.2); color: #4fd1c5; border-color: var(--primary); box-shadow: 0 0 10px rgba(33, 132, 129, 0.2); }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(33, 132, 129, 0.1); color: #4fd1c5; font-size: 12px; font-weight: 600; margin: 4px; border: 1px solid rgba(33, 132, 129, 0.2); }
+    .badge.warning { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
+    .char-badge { padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); color: #4b5563; font-size: 12px; font-family: monospace; border: 1px solid transparent; transition: 0.3s; }
+    .char-badge.active { background: rgba(33, 132, 129, 0.2); color: #4fd1c5; border-color: var(--primary); box-shadow: 0 0 10px rgba(33, 132, 129, 0.2); }
 
-    .section-title { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-    .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-    
-    ul#feedbackList { list-style: none; padding: 0; }
-    ul#feedbackList li { font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); padding-left: 20px; position: relative; }
-    ul#feedbackList li::before { content: "•"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
+    .section-title { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    
+    ul#feedbackList { list-style: none; padding: 0; }
+    ul#feedbackList li { font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); padding-left: 20px; position: relative; }
+    ul#feedbackList li::before { content: "•"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
 
-    .cta-btn { display: block; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 14px; border-radius: 10px; font-weight: 800; margin-top: 25px; transition: all 0.2s; }
-    .cta-btn:hover { background: #1a6b68; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 132, 129, 0.3); }
+    .cta-btn { display: block; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 14px; border-radius: 10px; font-weight: 800; margin-top: 25px; transition: all 0.2s; }
+    .cta-btn:hover { background: #1a6b68; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 132, 129, 0.3); }
 
-    /* Knowledge Grid */
-    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
-    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-decoration: none; transition: 0.3s; }
-    .guide-card:hover { transform: translateY(-4px); border-color: var(--primary); background: rgba(33, 132, 129, 0.05); }
-    .guide-title { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px; }
-    .guide-hook { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
+    /* Knowledge Grid */
+    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
+    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-decoration: none; transition: 0.3s; }
+    .guide-card:hover { transform: translateY(-4px); border-color: var(--primary); background: rgba(33, 132, 129, 0.05); }
+    .guide-title { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px; }
+    .guide-hook { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
 
-    @media (max-width: 600px) {
-      .guides-grid, .controls, .grid-stats { grid-template-columns: 1fr; }
-      .metrics-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-  </style>
+    @media (max-width: 600px) {
+      .guides-grid, .controls, .grid-stats { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="nav-links">
-    <a href="index.html" class="active">Strength Checker</a>
-    <a href="password-generator/index.html">Secure Generator</a>
-  </nav>
+  <nav class="nav-links">
+    <a href="index.html" class="active">Strength Checker</a>
+    <a href="password-generator/index.html">Secure Generator</a>
+  </nav>
 
-  <div class="box" id="mainBox">
-    <div class="hero">
-      <div class="status-badge">
-        <div id="statusDot" class="status-dot"></div>
-        <span id="statusText">Engine Offline</span>
-      </div>
-      <br>
-      <img src="logo.jpg" alt="Logo" class="hero-logo" />
-      <h1>Password Strength Tester</h1>
-      <div class="trust-box">
-        🔒 <strong>Private & Secure:</strong> Analysis happens 100% locally in your browser. 
-        No data is ever sent to a server.
-      </div>
-    </div>
+  <div class="box" id="mainBox">
+    <div class="hero">
+      <div class="status-badge">
+        <div id="statusDot" class="status-dot"></div>
+        <span id="statusText">Engine Offline</span>
+      </div>
+      <br>
+      <img src="logo.jpg" alt="Logo" class="hero-logo" />
+      <h1>Password Strength Tester</h1>
+      <div class="trust-box">
+        🔒 <strong>Private & Secure:</strong> Analysis happens 100% locally in your browser. 
+        No data is ever sent to a server.
+      </div>
+    </div>
 
-    <div class="input-wrapper">
-      <input type="password" id="passwordInput" placeholder="Enter password to analyze..." autocomplete="off" />
-      <button class="toggle-btn" id="toggleBtn">SHOW</button>
-    </div>
+    <div class="input-wrapper">
+      <input type="password" id="passwordInput" placeholder="Enter password to analyze..." autocomplete="off" />
+      <button class="toggle-btn" id="toggleBtn">SHOW</button>
+    </div>
 
-    <div class="strength-bar-bg">
-      <div class="strength-bar-fill" id="strengthBar"></div>
-    </div>
+    <div class="strength-bar-bg">
+      <div class="strength-bar-fill" id="strengthBar"></div>
+    </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 15px;">
-        <div class="result" id="result" style="font-size: 20px; font-weight: 900;">Strength: —</div>
-        <div class="small" id="details" style="font-size: 12px; color: var(--text-muted);">Ready...</div>
-    </div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 15px;">
+        <div class="result" id="result" style="font-size: 20px; font-weight: 900;">Strength: —</div>
+        <div class="small" id="details" style="font-size: 12px; color: var(--text-muted);">Ready...</div>
+    </div>
 
-    <div class="controls">
-      <div class="control-group">
-        <label>Online Attack Speed</label>
-        <select id="onlineSelect">
-          <option value="10">Slow Login (10/s)</option>
-          <option value="1000" selected>Fast API (1k/s)</option>
-          <option value="100000">No Limit (100k/s)</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label>Offline Hardware</label>
-        <select id="gpuSelect">
-          <option value="1e10">Consumer CPU</option>
-          <option value="1e11" selected>RTX 4090 GPU</option>
-          <option value="8e11">8x GPU Rig</option>
-          <option value="1e14">Supercomputer</option>
-        </select>
-      </div>
-    </div>
+    <div class="controls">
+      <div class="control-group">
+        <label>Online Attack Speed</label>
+        <select id="onlineSelect">
+          <option value="10">Slow Login (10/s)</option>
+          <option value="1000" selected>Fast API (1k/s)</option>
+          <option value="100000">No Limit (100k/s)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Offline Hardware</label>
+        <select id="gpuSelect">
+          <option value="1e10">Consumer CPU</option>
+          <option value="1e11" selected>RTX 4090 GPU</option>
+          <option value="8e11">8x GPU Rig</option>
+          <option value="1e14">Supercomputer</option>
+        </select>
+      </div>
+    </div>
 
-    <div class="metrics-grid">
-      <div class="metric-box">
-        <span class="metric-label">Length</span>
-        <span class="metric-value" id="charLength">0</span>
-      </div>
-      <div class="metric-box">
-        <span class="metric-label">Pool Size</span>
-        <span class="metric-value" id="poolSize">0</span>
-      </div>
-      <div class="metric-box">
-        <span class="metric-label">Entropy</span>
-        <span class="metric-value" id="exactEntropy">0.0</span>
-      </div>
-    </div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <span class="metric-label">Length</span>
+        <span class="metric-value" id="charLength">0</span>
+      </div>
+      <div class="metric-box">
+        <span class="metric-label">Pool Size</span>
+        <span class="metric-value" id="poolSize">0</span>
+      </div>
+      <div class="metric-box">
+        <span class="metric-label">Entropy</span>
+        <span class="metric-value" id="exactEntropy">0.0</span>
+      </div>
+    </div>
 
-    <div style="margin-bottom: 25px;">
-      <div class="charset-visualizer">
-        <span class="char-badge" id="badge-lower">abc</span>
-        <span class="char-badge" id="badge-upper">ABC</span>
-        <span class="char-badge" id="badge-num">123</span>
-        <span class="char-badge" id="badge-sym">#$&</span>
-      </div>
-    </div>
+    <div style="margin-bottom: 25px;">
+      <div class="charset-visualizer">
+        <span class="char-badge" id="badge-lower">abc</span>
+        <span class="char-badge" id="badge-upper">ABC</span>
+        <span class="char-badge" id="badge-num">123</span>
+        <span class="char-badge" id="badge-sym">#$&</span>
+      </div>
+    </div>
 
-    <div style="margin-bottom: 25px; height: 160px; display: flex; justify-content: center; background: rgba(0,0,0,0.15); border-radius: 12px; border: 1px solid var(--border); padding: 15px;">
-      <canvas id="compositionChart"></canvas>
-    </div>
+    <div style="margin-bottom: 25px; height: 160px; display: flex; justify-content: center; background: rgba(0,0,0,0.15); border-radius: 12px; border: 1px solid var(--border); padding: 15px;">
+      <canvas id="compositionChart"></canvas>
+    </div>
 
-    <div class="section-title">Time to Crack</div>
-    <div class="grid-stats">
-      <div class="stat-box">
-        <div class="stat-label">Online Brute-force</div>
-        <div class="stat-value" id="onlineTime">—</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Offline GPU Guessing</div>
-        <div class="stat-value" id="gpuTime">—</div>
-      </div>
-    </div>
-    <div class="small" style="margin-top: 10px; font-size: 11px; color: var(--text-muted);" id="searchSpace">Combinations: —</div>
+    <div class="section-title">Time to Crack</div>
+    <div class="grid-stats">
+      <div class="stat-box">
+        <div class="stat-label">Online Brute-force</div>
+        <div class="stat-value" id="onlineTime">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Offline GPU Guessing</div>
+        <div class="stat-value" id="gpuTime">—</div>
+      </div>
+    </div>
+    <div class="small" style="margin-top: 10px; font-size: 11px; color: var(--text-muted);" id="searchSpace">Combinations: —</div>
 
-    <div class="section-title" style="margin-top:25px">Vulnerability Scan</div>
-    <div id="flags"></div>
-    <ul id="feedbackList" style="margin-top: 15px;"></ul>
+    <div class="section-title" style="margin-top:25px">Vulnerability Scan</div>
+    <div id="flags"></div>
+    <ul id="feedbackList" style="margin-top: 15px;"></ul>
 
-    <a href="password-generator/index.html" class="cta-btn">Generate a Secure Password</a>
-  </div>
+    <a href="password-generator/index.html" class="cta-btn">Generate a Secure Password</a>
+  </div>
 
-  <div style="text-align:center; margin-top: 40px; font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Security Knowledge Base</div>
-  
-  <div class="guides-grid">
-    <a href="length-vs-complexity/index.html" class="guide-card">
-      <div class="guide-title">📏 Length vs Complexity</div>
-      <p class="guide-hook">Why a 16-character simple phrase beats an 8-character "complex" password every time.</p>
-    </a>
-    <a href="data-breaches/index.html" class="guide-card">
-      <div class="guide-title">🔓 How Breaches Work</div>
-      <p class="guide-hook">Hackers don't guess; they steal. Learn why password reuse is the real danger.</p>
-    </a>
-    <a href="password-managers/index.html" class="guide-card">
-      <div class="guide-title">🔑 Why Use a Manager?</div>
-      <p class="guide-hook">Stop memorizing everything. Learn the secure way to handle "Uncrackable" logins.</p>
-    </a>
-    <a href="safety-of-checkers/index.html" class="guide-card">
-      <div class="guide-title">🛡️ Privacy Technology</div>
-      <p class="guide-hook">How we use WebAssembly to analyze your data without ever seeing it.</p>
-    </a>
-  </div>
+  <div style="text-align:center; margin-top: 40px; font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Security Knowledge Base</div>
+  
+  <div class="guides-grid">
+    <a href="length-vs-complexity/index.html" class="guide-card">
+      <div class="guide-title">📏 Length vs Complexity</div>
+      <p class="guide-hook">Why a 16-character simple phrase beats an 8-character "complex" password every time.</p>
+    </a>
+    <a href="data-breaches/index.html" class="guide-card">
+      <div class="guide-title">🔓 How Breaches Work</div>
+      <p class="guide-hook">Hackers don't guess; they steal. Learn why password reuse is the real danger.</p>
+    </a>
+    <a href="password-managers/index.html" class="guide-card">
+      <div class="guide-title">🔑 Why Use a Manager?</div>
+      <p class="guide-hook">Stop memorizing everything. Learn the secure way to handle "Uncrackable" logins.</p>
+    </a>
+    <a href="safety-of-checkers/index.html" class="guide-card">
+      <div class="guide-title">🛡️ Privacy Technology</div>
+      <p class="guide-hook">How we use WebAssembly to analyze your data without ever seeing it.</p>
+    </a>
+  </div>
 
-  <script src="password.js"></script>
-  <script>
-    const input = document.getElementById("passwordInput");
-    const toggleBtn = document.getElementById("toggleBtn");
-    const result = document.getElementById("result");
-    const details = document.getElementById("details");
-    const onlineTime = document.getElementById("onlineTime");
-    const gpuTime = document.getElementById("gpuTime");
-    const searchSpace = document.getElementById("searchSpace");
-    const flags = document.getElementById("flags");
-    const feedbackList = document.getElementById("feedbackList");
-    const strengthBar = document.getElementById("strengthBar");
-    const mainBox = document.getElementById("mainBox");
-    const statusDot = document.getElementById("statusDot");
-    const statusText = document.getElementById("statusText");
+  <script src="password.js"></script>
+  <script>
+    const input = document.getElementById("passwordInput");
+    const toggleBtn = document.getElementById("toggleBtn");
+    const result = document.getElementById("result");
+    const details = document.getElementById("details");
+    const onlineTime = document.getElementById("onlineTime");
+    const gpuTime = document.getElementById("gpuTime");
+    const searchSpace = document.getElementById("searchSpace");
+    const flags = document.getElementById("flags");
+    const feedbackList = document.getElementById("feedbackList");
+    const strengthBar = document.getElementById("strengthBar");
+    const mainBox = document.getElementById("mainBox");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
 
-    const onlineSelect = document.getElementById("onlineSelect");
-    const gpuSelect = document.getElementById("gpuSelect");
+    const onlineSelect = document.getElementById("onlineSelect");
+    const gpuSelect = document.getElementById("gpuSelect");
 
-    const ctx = document.getElementById("compositionChart").getContext("2d");
-    let compChart = new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: ["Lowercase", "Uppercase", "Numbers", "Symbols"],
-        datasets: [{
-          data: [0, 0, 0, 0],
-          backgroundColor: ["#218481", "#4fd1c5", "#eab308", "#ef4444"],
-          borderWidth: 0,
-          hoverOffset: 4
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false, color: "#9ca3af", cutout: "75%",
-        plugins: { legend: { position: "right", labels: { color: "#9ca3af", font: { family: "monospace", size: 10 }, boxWidth: 10 } } }
-      }
-    });
+    const ctx = document.getElementById("compositionChart").getContext("2d");
+    let compChart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Lowercase", "Uppercase", "Numbers", "Symbols"],
+        datasets: [{
+          data: [0, 0, 0, 0],
+          backgroundColor: ["#218481", "#4fd1c5", "#eab308", "#ef4444"],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, color: "#9ca3af", cutout: "75%",
+        plugins: { legend: { position: "right", labels: { color: "#9ca3af", font: { family: "monospace", size: 10 }, boxWidth: 10 } } }
+      }
+    });
 
-    toggleBtn.addEventListener("click", () => {
-      input.type = input.type === "password" ? "text" : "password";
-      toggleBtn.textContent = input.type === "password" ? "SHOW" : "HIDE";
-    });
+    toggleBtn.addEventListener("click", () => {
+      input.type = input.type === "password" ? "text" : "password";
+      toggleBtn.textContent = input.type === "password" ? "SHOW" : "HIDE";
+    });
 
-    function renderFlags(data) {
-      flags.innerHTML = "";
-      const warnings = [];
-      if (data.isPassphrase) warnings.push({t: "Passphrase", w: false});
-      if (data.isBreached) warnings.push({t: "Compromised", w: true});
-      if (data.sequential) warnings.push({t: "Sequential", w: true});
-      if (data.spatialKeyboard) warnings.push({t: "Keyboard Walk", w: true});
-      if (data.repeatedChars) warnings.push({t: "Repeats", w: true});
-      if (data.repeatedPattern) warnings.push({t: "Pattern Repeat", w: true});
-      if (data.birthdateLike) warnings.push({t: "Date-like", w: true});
+    function renderFlags(data) {
+      flags.innerHTML = "";
+      const warnings = [];
+      if (data.isPassphrase) warnings.push({t: "Passphrase", w: false});
+      if (data.isBreached) warnings.push({t: "Compromised", w: true});
+      if (data.sequential) warnings.push({t: "Sequential", w: true});
+      if (data.spatialKeyboard) warnings.push({t: "Keyboard Walk", w: true});
+      if (data.repeatedChars) warnings.push({t: "Repeats", w: true});
+      if (data.repeatedPattern) warnings.push({t: "Pattern Repeat", w: true});
+      if (data.birthdateLike) warnings.push({t: "Date-like", w: true});
 
-      if (warnings.length === 0) {
-        flags.innerHTML = "<span style='font-size:12px; color:var(--text-muted)'>No structural warnings detected.</span>";
-        return;
-      }
+      if (warnings.length === 0) {
+        flags.innerHTML = "<span style='font-size:12px; color:var(--text-muted)'>No structural warnings detected.</span>";
+        return;
+      }
 
-      warnings.forEach(item => {
-        const span = document.createElement("span");
-        span.className = item.w ? "badge warning" : "badge";
-        span.textContent = item.t;
-        flags.appendChild(span);
-      });
-    }
+      warnings.forEach(item => {
+        const span = document.createElement("span");
+        span.className = item.w ? "badge warning" : "badge";
+        span.textContent = item.t;
+        flags.appendChild(span);
+      });
+    }
 
-    function updateBar(score) {
-      strengthBar.style.width = score + "%";
-      if (score === 0 && !input.value) {
-        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.05)");
-      } else if (score < 30) {
-        strengthBar.style.backgroundColor = "#ef4444";
-        mainBox.style.setProperty("--glow-color", "rgba(239, 68, 68, 0.2)");
-      } else if (score < 60) {
-        strengthBar.style.backgroundColor = "#eab308";
-        mainBox.style.setProperty("--glow-color", "rgba(234, 179, 8, 0.2)");
-      } else {
-        strengthBar.style.backgroundColor = "#218481";
-        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.3)");
-      }
-    }
+    function updateBar(score) {
+      strengthBar.style.width = score + "%";
+      if (score === 0 && !input.value) {
+        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.05)");
+      } else if (score < 30) {
+        strengthBar.style.backgroundColor = "#ef4444";
+        mainBox.style.setProperty("--glow-color", "rgba(239, 68, 68, 0.2)");
+      } else if (score < 60) {
+        strengthBar.style.backgroundColor = "#eab308";
+        mainBox.style.setProperty("--glow-color", "rgba(234, 179, 8, 0.2)");
+      } else {
+        strengthBar.style.backgroundColor = "#218481";
+        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.3)");
+      }
+    }
 
-    function analyze() {
-      const password = input.value;
-      const charLengthEl = document.getElementById("charLength");
-      const poolSizeEl = document.getElementById("poolSize");
-      const exactEntropyEl = document.getElementById("exactEntropy");
-      const badgeLower = document.getElementById("badge-lower");
-      const badgeUpper = document.getElementById("badge-upper");
-      const badgeNum = document.getElementById("badge-num");
-      const badgeSym = document.getElementById("badge-sym");
+    function analyze() {
+      const password = input.value;
+      const charLengthEl = document.getElementById("charLength");
+      const poolSizeEl = document.getElementById("poolSize");
+      const exactEntropyEl = document.getElementById("exactEntropy");
+      const badgeLower = document.getElementById("badge-lower");
+      const badgeUpper = document.getElementById("badge-upper");
+      const badgeNum = document.getElementById("badge-num");
+      const badgeSym = document.getElementById("badge-sym");
 
-      if (!password) {
-        charLengthEl.textContent = "0"; poolSizeEl.textContent = "0"; exactEntropyEl.textContent = "0.0";
-        badgeLower.classList.remove("active"); badgeUpper.classList.remove("active");
-        badgeNum.classList.remove("active"); badgeSym.classList.remove("active");
-        compChart.data.datasets[0].data = [0, 0, 0, 0]; compChart.update();
-        result.textContent = "Strength: —"; details.textContent = "Ready...";
-        onlineTime.textContent = "—"; gpuTime.textContent = "—";
-        searchSpace.textContent = "Combinations: —"; flags.innerHTML = ""; feedbackList.innerHTML = "";
-        updateBar(0); return;
-      }
+      if (!password) {
+        charLengthEl.textContent = "0"; poolSizeEl.textContent = "0"; exactEntropyEl.textContent = "0.0";
+        badgeLower.classList.remove("active"); badgeUpper.classList.remove("active");
+        badgeNum.classList.remove("active"); badgeSym.classList.remove("active");
+        compChart.data.datasets[0].data = [0, 0, 0, 0]; compChart.update();
+        result.textContent = "Strength: —"; details.textContent = "Ready...";
+        onlineTime.textContent = "—"; gpuTime.textContent = "—";
+        searchSpace.textContent = "Combinations: —"; flags.innerHTML = ""; feedbackList.innerHTML = "";
+        updateBar(0); return;
+      }
 
-      let pool = 0;
-      const hasLower = /[a-z]/.test(password); const hasUpper = /[A-Z]/.test(password);
-      const hasNum = /[0-9]/.test(password); const hasSym = /[^a-zA-Z0-9\s]/.test(password);
-      if (hasLower) pool += 26; if (hasUpper) pool += 26; if (hasNum) pool += 10; if (hasSym) pool += 33;
-      if (/\s/.test(password)) pool += 1;
+      let pool = 0;
+      const hasLower = /[a-z]/.test(password); const hasUpper = /[A-Z]/.test(password);
+      const hasNum = /[0-9]/.test(password); const hasSym = /[^a-zA-Z0-9\s]/.test(password);
+      if (hasLower) pool += 26; if (hasUpper) pool += 26; if (hasNum) pool += 10; if (hasSym) pool += 33;
+      if (/\s/.test(password)) pool += 1;
 
-      badgeLower.classList.toggle("active", hasLower); badgeUpper.classList.toggle("active", hasUpper);
-      badgeNum.classList.toggle("active", hasNum); badgeSym.classList.toggle("active", hasSym);
-      charLengthEl.textContent = password.length; poolSizeEl.textContent = pool;
+      badgeLower.classList.toggle("active", hasLower); badgeUpper.classList.toggle("active", hasUpper);
+      badgeNum.classList.toggle("active", hasNum); badgeSym.classList.toggle("active", hasSym);
+      charLengthEl.textContent = password.length; poolSizeEl.textContent = pool;
 
-      const nl = (password.match(/[a-z]/g) || []).length; const nu = (password.match(/[A-Z]/g) || []).length;
-      const nd = (password.match(/[0-9]/g) || []).length; const ns = (password.match(/[^a-zA-Z0-9\s]/g) || []).length;
-      compChart.data.datasets[0].data = [nl, nu, nd, ns]; compChart.update();
+      const nl = (password.match(/[a-z]/g) || []).length; const nu = (password.match(/[A-Z]/g) || []).length;
+      const nd = (password.match(/[0-9]/g) || []).length; const ns = (password.match(/[^a-zA-Z0-9\s]/g) || []).length;
+      compChart.data.datasets[0].data = [nl, nu, nd, ns]; compChart.update();
 
-      try {
-        const json = Module.ccall("analyze_password_json", "string", ["string", "number", "number"], [password, parseFloat(onlineSelect.value), parseFloat(gpuSelect.value)]);
-        const data = JSON.parse(json);
-        exactEntropyEl.textContent = Number(data.entropyBits).toFixed(1);
-        result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
-        details.textContent = `${data.entropyBits} bits | ${data.dictCoverage}% Coverage`;
-        onlineTime.textContent = data.onlineTime; gpuTime.textContent = data.gpuTime;
-        searchSpace.textContent = `Combinations: ${data.searchSpace}`;
-        updateBar(data.score); renderFlags(data);
-        feedbackList.innerHTML = "";
-        data.feedback.forEach(msg => { const li = document.createElement("li"); li.textContent = msg; feedbackList.appendChild(li); });
-      } catch (e) { console.error(e); }
-    }
+      try {
+        const json = Module.ccall("analyze_password_json", "string", ["string", "number", "number"], [password, parseFloat(onlineSelect.value), parseFloat(gpuSelect.value)]);
+        const data = JSON.parse(json);
+        exactEntropyEl.textContent = Number(data.entropyBits).toFixed(1);
+        result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
+        details.textContent = `${data.entropyBits} bits | ${data.dictCoverage}% Coverage`;
+        onlineTime.textContent = data.onlineTime; gpuTime.textContent = data.gpuTime;
+        searchSpace.textContent = `Combinations: ${data.searchSpace}`;
+        updateBar(data.score); renderFlags(data);
+        feedbackList.innerHTML = "";
+        data.feedback.forEach(msg => { const li = document.createElement("li"); li.textContent = msg; feedbackList.appendChild(li); });
+      } catch (e) { console.error(e); }
+    }
 
-    let timeout;
-    input.addEventListener("input", () => {
-      mainBox.classList.add("flash");
-      setTimeout(() => mainBox.classList.remove("flash"), 150);
-      clearTimeout(timeout);
-      timeout = setTimeout(analyze, 150);
-    });
+    let timeout;
+    input.addEventListener("input", () => {
+      mainBox.classList.add("flash");
+      setTimeout(() => mainBox.classList.remove("flash"), 150);
+      clearTimeout(timeout);
+      timeout = setTimeout(analyze, 150);
+    });
 
-    onlineSelect.addEventListener("change", analyze);
-    gpuSelect.addEventListener("change", analyze);
+    onlineSelect.addEventListener("change", analyze);
+    gpuSelect.addEventListener("change", analyze);
 
-    Module.onRuntimeInitialized = () => {
-      statusDot.classList.add("online");
-      statusText.textContent = "Local Engine Active";
-      analyze();
-    };
-  </script>
+    Module.onRuntimeInitialized = () => {
+      statusDot.classList.add("online");
+      statusText.textContent = "Local Engine Active";
+      analyze();
+    };
+  </script>
 </body>
 </html>
