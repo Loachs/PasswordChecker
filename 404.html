@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Access Denied | Free Password Checker</title>
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+
+  <style>
+    :root {
+      --primary: #218481;
+      --error: #ff4d4d;
+      --bg-top: #0d0a15;
+      --bg-bottom: #1a142c;
+      --card-bg: #1f1a30;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #352d4d;
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      color: var(--text-main);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .error-container {
+      max-width: 500px;
+      padding: 40px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .glitch-code {
+      font-size: 80px;
+      font-weight: bold;
+      color: var(--error);
+      margin: 0;
+      text-shadow: 2px 2px rgba(255, 77, 77, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    h1 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+    p { color: var(--text-muted); margin-bottom: 30px; line-height: 1.6; }
+
+    .terminal-box {
+      background: #000;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+    }
+
+    .terminal-line { color: var(--primary); margin-bottom: 5px; }
+    .terminal-line span { color: var(--text-main); }
+
+    .home-btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-family: sans-serif;
+      transition: all 0.2s;
+    }
+
+    .home-btn:hover {
+      background: #1a6b68;
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    /* Scanline effect for that retro security feel */
+    body::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 2;
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-container">
+    <p class="glitch-code">404</p>
+    <h1>Sector Not Found</h1>
+    <p>The page you are looking for has been moved, deleted, or never existed in this encrypted directory.</p>
+
+    <div class="terminal-box">
+      <div class="terminal-line">> STATUS: <span>DISCONNECTED</span></div>
+      <div class="terminal-line">> TRACE: <span>HTTP_REQUEST_FAILED</span></div>
+      <div class="terminal-line">> ACTION: <span>REROUTING_TO_SECURE_ZONE...</span></div>
+    </div>
+
+    <a href="index.html" class="home-btn">Return to Secure Zone</a>
+  </div>
+
+</body>
+</html>
