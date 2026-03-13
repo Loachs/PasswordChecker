@@ -13,12 +13,13 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.freepasswordchecker.com/" />
   <meta property="og:title" content="Free Password Checker | 100% Local Strength Tester" />
-  <meta property="og:description" content="Test your password strength securely. Our engine runs 100% locally in your browser." />
+  <meta property="og:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
   <meta property="og:image" content="https://www.freepasswordchecker.com/logo.jpg" />
 
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:url" content="https://www.freepasswordchecker.com/" />
   <meta property="twitter:title" content="Free Password Checker | 100% Local Strength Tester" />
+  <meta property="twitter:description" content="Test your password strength instantly and securely. Our WebAssembly engine runs 100% locally in your browser to calculate entropy and offline GPU crack times." />
   <meta property="twitter:image" content="https://www.freepasswordchecker.com/logo.jpg" />
 
   <link rel="icon" type="image/jpeg" href="logo.jpg" />
@@ -29,8 +30,8 @@
   <style>
     :root {
       --primary: #218481;
-      --bg-top: #151122;
-      --bg-bottom: #1a142c;
+      --bg-top: #0f0d1a;
+      --bg-bottom: #161224;
       --card-bg: #1f1a30;
       --input-bg: #0d0a15;
       --text-main: #f3f4f6;
@@ -39,88 +40,120 @@
       --trust-bg: rgba(34, 197, 94, 0.08);
       --trust-border: rgba(34, 197, 94, 0.25);
       --trust-text: #c7f9e5;
-      --safe-green: #22c55e;
     }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      max-width: 700px;
+      max-width: 720px;
       margin: 20px auto 60px auto;
       padding: 20px;
-      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.5;
     }
 
-    /* Navigation */
-    .nav-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 24px; }
-    .nav-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px; padding: 10px 20px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); transition: all 0.2s; }
-    .nav-links a.active { color: #ffffff; background: rgba(33, 132, 129, 0.2); border-color: var(--primary); }
-    .nav-links a:hover:not(.active) { color: #ffffff; border-color: #ffffff; }
-    
-    .cta-btn { display: block; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; transition: background 0.2s; }
-    .cta-btn:hover { background: #1a6b68; }
-
-    /* Engine Status Pill */
-    .status-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 999px; border: 1px solid var(--border); margin-bottom: 12px; font-weight: bold; }
-    .status-dot { width: 7px; height: 7px; background: #6b7280; border-radius: 50%; transition: all 0.3s; }
-    .status-dot.active { background: var(--safe-green); box-shadow: 0 0 8px var(--safe-green); }
+    /* Navigation Bar */
+    .nav-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 8px 18px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .nav-links a.active { color: #ffffff; background: var(--primary); border-color: var(--primary); }
+    .nav-links a:hover:not(.active) { color: #ffffff; border-color: var(--text-muted); }
 
     .box {
       background: var(--card-bg);
-      padding: 32px;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 var(--glow-spread, 20px) var(--glow-color, rgba(33, 132, 129, 0.05));
-      transition: box-shadow 0.2s ease-out;
+      padding: 35px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 var(--glow-spread, 10px) var(--glow-color, rgba(33, 132, 129, 0.05));
+      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .box.flash { --glow-spread: 60px; }
+    .box.flash { --glow-spread: 50px; }
 
-    h1 { margin-top: 0; font-size: 24px; color: #ffffff; margin-bottom: 4px; }
-    .hero { text-align: center; margin-bottom: 24px; }
-    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); margin-bottom: 12px; }
-    .trust-box { margin-top: 12px; max-width: 540px; margin-left: auto; margin-right: auto; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 14px; }
-    .trust-badges { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-    
-    .input-wrapper { position: relative; margin-top: 16px; }
-    input[type="password"], input[type="text"] { width: 100%; padding: 14px 48px 14px 14px; font-size: 18px; background: var(--input-bg); color: #ffffff; border: 1px solid var(--border); border-radius: 10px; box-sizing: border-box; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(33, 132, 129, 0.25); }
-    .toggle-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 14px; font-weight: bold; }
-    
-    .strength-bar-bg { height: 8px; background: #2a233f; border-radius: 99px; margin-top: 16px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
-    .strength-bar-fill { height: 100%; width: 0%; border-radius: 99px; transition: width 0.4s ease, background-color 0.4s ease; background-color: #ef4444; }
-    
-    .result { margin-top: 12px; font-size: 20px; font-weight: bold; color: #ffffff; }
-    .controls { display: flex; gap: 16px; margin-top: 24px; background: rgba(0, 0, 0, 0.15); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
-    .control-group { display: flex; flex-direction: column; flex: 1; }
-    .control-group label { font-size: 12px; font-weight: bold; color: var(--text-muted); margin-bottom: 4px; }
-    select { padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text-main); font-size: 14px; outline: none; }
-    
-    .section { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
-    .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-    .stat-box { background: rgba(255, 255, 255, 0.03); padding: 12px; border-radius: 8px; border: 1px solid var(--border); }
-    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: bold; text-transform: uppercase; }
-    .stat-value { font-size: 16px; font-weight: 600; color: #ffffff; margin-top: 4px; }
-    
-    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
-    .metric-box { background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(33, 132, 129, 0.15); text-align: center; }
-    .metric-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; display: block; margin-bottom: 4px; }
-    .metric-value { font-size: 18px; font-weight: bold; color: #4fd1c5; font-family: monospace; }
-    
-    .char-badge { padding: 4px 12px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); color: #6b7280; font-size: 12px; font-family: monospace; border: 1px solid rgba(255, 255, 255, 0.1); }
-    .char-badge.active { background: rgba(33, 132, 129, 0.2); color: #4fd1c5; border-color: #218481; box-shadow: 0 0 8px rgba(33, 132, 129, 0.4); }
-    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 13px; font-weight: 600; margin-right: 8px; margin-top: 8px; border: 1px solid rgba(33, 132, 129, 0.3); }
-    .badge.warning { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    /* Header & Logo */
+    .hero { text-align: center; margin-bottom: 28px; position: relative; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 12px; border: 2px solid var(--border); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .status-dot { width: 6px; height: 6px; background: #475569; border-radius: 50%; }
+    .status-dot.online { background: #10b981; box-shadow: 0 0 8px #10b981; }
 
-    /* Footer */
-    .site-footer { margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--text-muted); }
-    .footer-links { margin-bottom: 10px; }
-    .footer-links a { color: var(--primary); text-decoration: none; margin: 0 12px; font-weight: 600; }
+    .trust-box { background: var(--trust-bg); padding: 14px; border-radius: 12px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 13.5px; text-align: center; margin-bottom: 20px; }
+    
+    /* Input & Strength */
+    .input-wrapper { position: relative; }
+    input {
+      width: 100%; padding: 16px 50px 16px 16px; font-size: 18px; background: var(--input-bg);
+      color: #ffffff; border: 1px solid var(--border); border-radius: 12px; box-sizing: border-box; outline: none;
+      transition: all 0.2s; font-family: monospace;
+    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(33, 132, 129, 0.15); }
+    .toggle-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; }
+
+    .strength-bar-bg { height: 6px; background: #2a233f; border-radius: 10px; margin-top: 18px; overflow: hidden; }
+    .strength-bar-fill { height: 100%; width: 0%; transition: width 0.5s ease, background-color 0.5s ease; }
+
+    /* Controls & Stats */
+    .controls { display: flex; gap: 12px; margin-top: 24px; }
+    .control-group { flex: 1; display: flex; flex-direction: column; }
+    .control-group label { font-size: 11px; font-weight: bold; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    select { padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: #fff; font-size: 13px; cursor: pointer; }
+
+    .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+    .metric-box { background: rgba(0,0,0,0.2); padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+    .metric-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .metric-value { font-size: 18px; font-weight: 800; color: #4fd1c5; font-family: monospace; }
+
+    .grid-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px; border: 1px solid var(--border); }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-value { font-size: 15px; font-weight: 600; color: #fff; }
+
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; background: rgba(33, 132, 129, 0.1); color: #4fd1c5; font-size: 12px; font-weight: 600; margin: 4px; border: 1px solid rgba(33, 132, 129, 0.2); }
+    .badge.warning { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
+    .char-badge { padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.05); color: #4b5563; font-size: 12px; font-family: monospace; border: 1px solid transparent; transition: 0.3s; }
+    .char-badge.active { background: rgba(33, 132, 129, 0.2); color: #4fd1c5; border-color: var(--primary); box-shadow: 0 0 10px rgba(33, 132, 129, 0.2); }
+
+    .section-title { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    
+    ul#feedbackList { list-style: none; padding: 0; }
+    ul#feedbackList li { font-size: 13.5px; margin-bottom: 8px; color: var(--text-main); padding-left: 20px; position: relative; }
+    ul#feedbackList li::before { content: "•"; color: var(--primary); position: absolute; left: 0; font-weight: bold; }
+
+    .cta-btn { display: block; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 14px; border-radius: 10px; font-weight: 800; margin-top: 25px; transition: all 0.2s; }
+    .cta-btn:hover { background: #1a6b68; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(33, 132, 129, 0.3); }
+
+    /* Knowledge Grid */
+    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 20px; }
+    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-decoration: none; transition: 0.3s; }
+    .guide-card:hover { transform: translateY(-4px); border-color: var(--primary); background: rgba(33, 132, 129, 0.05); }
+    .guide-title { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px; }
+    .guide-hook { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
 
     @media (max-width: 600px) {
-      .metrics-grid { grid-template-columns: 1fr; }
-      .grid-stats { grid-template-columns: 1fr; }
+      .guides-grid, .controls, .grid-stats { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -133,25 +166,21 @@
 
   <div class="box" id="mainBox">
     <div class="hero">
-      <div class="status-pill">
-        <div class="status-dot" id="engineDot"></div>
-        <span id="statusText">Initialising Local Engine...</span>
+      <div class="status-badge">
+        <div id="statusDot" class="status-dot"></div>
+        <span id="statusText">Engine Offline</span>
       </div>
       <br>
       <img src="logo.jpg" alt="Logo" class="hero-logo" />
       <h1>Password Strength Tester</h1>
       <div class="trust-box">
-        🔒 Analyzed <strong>entirely in your browser</strong>. 100% private.
-      </div>
-      <div class="trust-badges">
-        <span class="badge">Runs Locally</span>
-        <span class="badge">No Server Upload</span>
-        <span class="badge">WebAssembly Engine</span>
+        🔒 <strong>Private & Secure:</strong> Analysis happens 100% locally in your browser. 
+        No data is ever sent to a server.
       </div>
     </div>
 
     <div class="input-wrapper">
-      <input type="password" id="passwordInput" placeholder="Enter a password to analyze..." autocomplete="off" />
+      <input type="password" id="passwordInput" placeholder="Enter password to analyze..." autocomplete="off" />
       <button class="toggle-btn" id="toggleBtn">SHOW</button>
     </div>
 
@@ -159,109 +188,102 @@
       <div class="strength-bar-fill" id="strengthBar"></div>
     </div>
 
-    <div class="result" id="result">Strength: —</div>
-    <div class="small" id="details">Waiting for input...</div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 15px;">
+        <div class="result" id="result" style="font-size: 20px; font-weight: 900;">Strength: —</div>
+        <div class="small" id="details" style="font-size: 12px; color: var(--text-muted);">Ready...</div>
+    </div>
 
     <div class="controls">
       <div class="control-group">
-        <label for="onlineSelect">Online Attacker Speed</label>
+        <label>Online Attack Speed</label>
         <select id="onlineSelect">
-          <option value="10">Web Login (10/sec)</option>
-          <option value="1000" selected>Fast API (1k/sec)</option>
-          <option value="100000">No Rate Limit (100k/sec)</option>
+          <option value="10">Slow Login (10/s)</option>
+          <option value="1000" selected>Fast API (1k/s)</option>
+          <option value="100000">No Limit (100k/s)</option>
         </select>
       </div>
       <div class="control-group">
-        <label for="gpuSelect">Offline Hardware</label>
+        <label>Offline Hardware</label>
         <select id="gpuSelect">
-          <option value="1e10">Standard PC CPU</option>
-          <option value="1e11" selected>1x RTX 4090 GPU</option>
-          <option value="8e11">8x RTX 4090 Rig</option>
-          <option value="1e14">Nation State Cluster</option>
+          <option value="1e10">Consumer CPU</option>
+          <option value="1e11" selected>RTX 4090 GPU</option>
+          <option value="8e11">8x GPU Rig</option>
+          <option value="1e14">Supercomputer</option>
         </select>
       </div>
     </div>
 
-    <div class="section">
-      <div><strong>Cryptography Metrics</strong></div>
-      <div style="display:flex; gap:8px; margin-top:12px; justify-content:center;">
-        <div class="char-badge" id="badge-lower">[a-z]</div>
-        <div class="char-badge" id="badge-upper">[A-Z]</div>
-        <div class="char-badge" id="badge-num">[0-9]</div>
-        <div class="char-badge" id="badge-sym">[!@#]</div>
+    <div class="metrics-grid">
+      <div class="metric-box">
+        <span class="metric-label">Length</span>
+        <span class="metric-value" id="charLength">0</span>
       </div>
-      <div class="metrics-grid">
-        <div class="metric-box">
-          <span class="metric-label">Length</span>
-          <span class="metric-value" id="charLength">0</span>
-        </div>
-        <div class="metric-box">
-          <span class="metric-label">Pool Size</span>
-          <span class="metric-value" id="poolSize">0</span>
-        </div>
-        <div class="metric-box">
-          <span class="metric-label">Raw Entropy</span>
-          <span class="metric-value" id="exactEntropy">0.0</span>
-        </div>
+      <div class="metric-box">
+        <span class="metric-label">Pool Size</span>
+        <span class="metric-value" id="poolSize">0</span>
       </div>
-      <div style="margin-top: 24px; height: 160px; display: flex; justify-content: center; background: rgba(0,0,0,0.15); border-radius: 8px; border: 1px solid var(--border); padding: 12px;">
-        <canvas id="compositionChart"></canvas>
+      <div class="metric-box">
+        <span class="metric-label">Entropy</span>
+        <span class="metric-value" id="exactEntropy">0.0</span>
       </div>
     </div>
 
-    <div class="section">
-      <div><strong>Crack Time Estimates</strong></div>
-      <div class="grid-stats">
-        <div class="stat-box">
-          <div class="stat-label">Online Attack</div>
-          <div class="stat-value" id="onlineTime">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Offline GPU Attack</div>
-          <div class="stat-value" id="gpuTime">—</div>
-        </div>
+    <div style="margin-bottom: 25px;">
+      <div class="charset-visualizer">
+        <span class="char-badge" id="badge-lower">abc</span>
+        <span class="char-badge" id="badge-upper">ABC</span>
+        <span class="char-badge" id="badge-num">123</span>
+        <span class="char-badge" id="badge-sym">#$&</span>
       </div>
-      <div class="small" style="margin-top: 12px;" id="searchSpace">Total combinations: —</div>
     </div>
 
-    <div class="section">
-      <div><strong>Detected Patterns</strong></div>
-      <div id="flags"></div>
+    <div style="margin-bottom: 25px; height: 160px; display: flex; justify-content: center; background: rgba(0,0,0,0.15); border-radius: 12px; border: 1px solid var(--border); padding: 15px;">
+      <canvas id="compositionChart"></canvas>
     </div>
 
-    <div class="section">
-      <div><strong>Feedback</strong></div>
-      <ul id="feedbackList" style="padding-left: 20px;"></ul>
-      <a href="password-generator/index.html" class="cta-btn">Create a Stronger Password</a>
+    <div class="section-title">Time to Crack</div>
+    <div class="grid-stats">
+      <div class="stat-box">
+        <div class="stat-label">Online Brute-force</div>
+        <div class="stat-value" id="onlineTime">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Offline GPU Guessing</div>
+        <div class="stat-value" id="gpuTime">—</div>
+      </div>
     </div>
+    <div class="small" style="margin-top: 10px; font-size: 11px; color: var(--text-muted);" id="searchSpace">Combinations: —</div>
+
+    <div class="section-title" style="margin-top:25px">Vulnerability Scan</div>
+    <div id="flags"></div>
+    <ul id="feedbackList" style="margin-top: 15px;"></ul>
+
+    <a href="password-generator/index.html" class="cta-btn">Generate a Secure Password</a>
   </div>
 
-  <div style="text-align:center; margin-top:40px; font-weight:bold; color:var(--text-muted); font-size:14px; text-transform:uppercase;">Security Knowledge Base</div>
-  <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:16px;">
-    <a href="length-vs-complexity/index.html" style="background:var(--card-bg); border:1px solid var(--border); padding:20px; border-radius:12px; text-decoration:none; color:inherit;">
-        <div style="font-size:24px;">📏</div>
-        <div style="font-weight:bold; color:white;">Length vs Complexity</div>
-        <p style="font-size:13px; color:var(--text-muted);">Why a 16-character phrase beats 8 complex chars.</p>
+  <div style="text-align:center; margin-top: 40px; font-size: 12px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">Security Knowledge Base</div>
+  
+  <div class="guides-grid">
+    <a href="length-vs-complexity/index.html" class="guide-card">
+      <div class="guide-title">📏 Length vs Complexity</div>
+      <p class="guide-hook">Why a 16-character simple phrase beats an 8-character "complex" password every time.</p>
     </a>
-    <a href="safety-of-checkers/index.html" style="background:var(--card-bg); border:1px solid var(--border); padding:20px; border-radius:12px; text-decoration:none; color:inherit;">
-        <div style="font-size:24px;">🛡️</div>
-        <div style="font-weight:bold; color:white;">Is This Site Safe?</div>
-        <p style="font-size:13px; color:var(--text-muted);">How WebAssembly keeps your data local.</p>
+    <a href="data-breaches/index.html" class="guide-card">
+      <div class="guide-title">🔓 How Breaches Work</div>
+      <p class="guide-hook">Hackers don't guess; they steal. Learn why password reuse is the real danger.</p>
+    </a>
+    <a href="password-managers/index.html" class="guide-card">
+      <div class="guide-title">🔑 Why Use a Manager?</div>
+      <p class="guide-hook">Stop memorizing everything. Learn the secure way to handle "Uncrackable" logins.</p>
+    </a>
+    <a href="safety-of-checkers/index.html" class="guide-card">
+      <div class="guide-title">🛡️ Privacy Technology</div>
+      <p class="guide-hook">How we use WebAssembly to analyze your data without ever seeing it.</p>
     </a>
   </div>
-
-  <footer class="site-footer">
-    <div class="footer-links">
-      <a href="https://github.com/Loachs/PasswordChecker" target="_blank">GitHub Source</a>
-      <a href="safety-of-checkers/index.html">Privacy Policy</a>
-    </div>
-    <p><strong>Open Source Privacy:</strong> No passwords ever leave your device.</p>
-    <p>&copy; 2026 Free Password Checker</p>
-  </footer>
 
   <script src="password.js"></script>
   <script>
-    // --- ALL YOUR ORIGINAL JAVASCRIPT LOGIC ---
     const input = document.getElementById("passwordInput");
     const toggleBtn = document.getElementById("toggleBtn");
     const result = document.getElementById("result");
@@ -273,7 +295,7 @@
     const feedbackList = document.getElementById("feedbackList");
     const strengthBar = document.getElementById("strengthBar");
     const mainBox = document.getElementById("mainBox");
-    const engineDot = document.getElementById("engineDot");
+    const statusDot = document.getElementById("statusDot");
     const statusText = document.getElementById("statusText");
 
     const onlineSelect = document.getElementById("onlineSelect");
@@ -283,10 +305,18 @@
     let compChart = new Chart(ctx, {
       type: "doughnut",
       data: {
-        labels: ["Lower", "Upper", "Num", "Sym"],
-        datasets: [{ data: [0, 0, 0, 0], backgroundColor: ["#218481", "#4fd1c5", "#eab308", "#ef4444"], borderWidth: 0 }]
+        labels: ["Lowercase", "Uppercase", "Numbers", "Symbols"],
+        datasets: [{
+          data: [0, 0, 0, 0],
+          backgroundColor: ["#218481", "#4fd1c5", "#eab308", "#ef4444"],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
       },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "right", labels: { color: "#9ca3af", font: { size: 11 } } } } }
+      options: {
+        responsive: true, maintainAspectRatio: false, color: "#9ca3af", cutout: "75%",
+        plugins: { legend: { position: "right", labels: { color: "#9ca3af", font: { family: "monospace", size: 10 }, boxWidth: 10 } } }
+      }
     });
 
     toggleBtn.addEventListener("click", () => {
@@ -297,71 +327,105 @@
     function renderFlags(data) {
       flags.innerHTML = "";
       const warnings = [];
-      if (data.isPassphrase) warnings.push("Passphrase");
-      if (data.isBreached) warnings.push("Breached");
-      if (data.sequential) warnings.push("Sequential");
-      if (data.spatialKeyboard) warnings.push("Keyboard Walk");
-      
-      warnings.forEach(w => {
-        const span = document.createElement("span");
-        span.className = "badge warning";
-        span.textContent = w;
-        flags.appendChild(span);
-      });
-    }
+      if (data.isPassphrase) warnings.push({t: "Passphrase", w: false});
+      if (data.isBreached) warnings.push({t: "Compromised", w: true});
+      if (data.sequential) warnings.push({t: "Sequential", w: true});
+      if (data.spatialKeyboard) warnings.push({t: "Keyboard Walk", w: true});
+      if (data.repeatedChars) warnings.push({t: "Repeats", w: true});
+      if (data.repeatedPattern) warnings.push({t: "Pattern Repeat", w: true});
+      if (data.birthdateLike) warnings.push({t: "Date-like", w: true});
 
-    function renderFeedback(messages) {
-      feedbackList.innerHTML = "";
-      messages.forEach(msg => {
-        const li = document.createElement("li");
-        li.textContent = msg;
-        li.style.color = "var(--text-muted)";
-        feedbackList.appendChild(li);
+      if (warnings.length === 0) {
+        flags.innerHTML = "<span style='font-size:12px; color:var(--text-muted)'>No structural warnings detected.</span>";
+        return;
+      }
+
+      warnings.forEach(item => {
+        const span = document.createElement("span");
+        span.className = item.w ? "badge warning" : "badge";
+        span.textContent = item.t;
+        flags.appendChild(span);
       });
     }
 
     function updateBar(score) {
       strengthBar.style.width = score + "%";
-      if (score < 40) strengthBar.style.backgroundColor = "#ef4444";
-      else if (score < 70) strengthBar.style.backgroundColor = "#eab308";
-      else strengthBar.style.backgroundColor = "#218481";
+      if (score === 0 && !input.value) {
+        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.05)");
+      } else if (score < 30) {
+        strengthBar.style.backgroundColor = "#ef4444";
+        mainBox.style.setProperty("--glow-color", "rgba(239, 68, 68, 0.2)");
+      } else if (score < 60) {
+        strengthBar.style.backgroundColor = "#eab308";
+        mainBox.style.setProperty("--glow-color", "rgba(234, 179, 8, 0.2)");
+      } else {
+        strengthBar.style.backgroundColor = "#218481";
+        mainBox.style.setProperty("--glow-color", "rgba(33, 132, 129, 0.3)");
+      }
     }
 
     function analyze() {
       const password = input.value;
-      if (!password) return;
+      const charLengthEl = document.getElementById("charLength");
+      const poolSizeEl = document.getElementById("poolSize");
+      const exactEntropyEl = document.getElementById("exactEntropy");
+      const badgeLower = document.getElementById("badge-lower");
+      const badgeUpper = document.getElementById("badge-upper");
+      const badgeNum = document.getElementById("badge-num");
+      const badgeSym = document.getElementById("badge-sym");
+
+      if (!password) {
+        charLengthEl.textContent = "0"; poolSizeEl.textContent = "0"; exactEntropyEl.textContent = "0.0";
+        badgeLower.classList.remove("active"); badgeUpper.classList.remove("active");
+        badgeNum.classList.remove("active"); badgeSym.classList.remove("active");
+        compChart.data.datasets[0].data = [0, 0, 0, 0]; compChart.update();
+        result.textContent = "Strength: —"; details.textContent = "Ready...";
+        onlineTime.textContent = "—"; gpuTime.textContent = "—";
+        searchSpace.textContent = "Combinations: —"; flags.innerHTML = ""; feedbackList.innerHTML = "";
+        updateBar(0); return;
+      }
+
+      let pool = 0;
+      const hasLower = /[a-z]/.test(password); const hasUpper = /[A-Z]/.test(password);
+      const hasNum = /[0-9]/.test(password); const hasSym = /[^a-zA-Z0-9\s]/.test(password);
+      if (hasLower) pool += 26; if (hasUpper) pool += 26; if (hasNum) pool += 10; if (hasSym) pool += 33;
+      if (/\s/.test(password)) pool += 1;
+
+      badgeLower.classList.toggle("active", hasLower); badgeUpper.classList.toggle("active", hasUpper);
+      badgeNum.classList.toggle("active", hasNum); badgeSym.classList.toggle("active", hasSym);
+      charLengthEl.textContent = password.length; poolSizeEl.textContent = pool;
+
+      const nl = (password.match(/[a-z]/g) || []).length; const nu = (password.match(/[A-Z]/g) || []).length;
+      const nd = (password.match(/[0-9]/g) || []).length; const ns = (password.match(/[^a-zA-Z0-9\s]/g) || []).length;
+      compChart.data.datasets[0].data = [nl, nu, nd, ns]; compChart.update();
 
       try {
         const json = Module.ccall("analyze_password_json", "string", ["string", "number", "number"], [password, parseFloat(onlineSelect.value), parseFloat(gpuSelect.value)]);
         const data = JSON.parse(json);
-
-        document.getElementById("charLength").textContent = password.length;
-        document.getElementById("exactEntropy").textContent = Number(data.entropyBits).toFixed(1);
-        onlineTime.textContent = data.onlineTime;
-        gpuTime.textContent = data.gpuTime;
+        exactEntropyEl.textContent = Number(data.entropyBits).toFixed(1);
         result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
-        
-        updateBar(data.score);
-        renderFlags(data);
-        renderFeedback(data.feedback);
-
-        // Update Chart
-        const numLower = (password.match(/[a-z]/g) || []).length;
-        const numUpper = (password.match(/[A-Z]/g) || []).length;
-        const numDigits = (password.match(/[0-9]/g) || []).length;
-        const numSym = (password.match(/[^a-zA-Z0-9]/g) || []).length;
-        compChart.data.datasets[0].data = [numLower, numUpper, numDigits, numSym];
-        compChart.update();
-
+        details.textContent = `${data.entropyBits} bits | ${data.dictCoverage}% Coverage`;
+        onlineTime.textContent = data.onlineTime; gpuTime.textContent = data.gpuTime;
+        searchSpace.textContent = `Combinations: ${data.searchSpace}`;
+        updateBar(data.score); renderFlags(data);
+        feedbackList.innerHTML = "";
+        data.feedback.forEach(msg => { const li = document.createElement("li"); li.textContent = msg; feedbackList.appendChild(li); });
       } catch (e) { console.error(e); }
     }
 
-    input.addEventListener("input", analyze);
+    let timeout;
+    input.addEventListener("input", () => {
+      mainBox.classList.add("flash");
+      setTimeout(() => mainBox.classList.remove("flash"), 150);
+      clearTimeout(timeout);
+      timeout = setTimeout(analyze, 150);
+    });
+
     onlineSelect.addEventListener("change", analyze);
     gpuSelect.addEventListener("change", analyze);
 
     Module.onRuntimeInitialized = () => {
-      engineDot.classList.add("active");
+      statusDot.classList.add("online");
       statusText.textContent = "Local Engine Active";
       analyze();
     };
