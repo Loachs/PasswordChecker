@@ -533,17 +533,32 @@
       const onlineSpeed = parseFloat(onlineSelect.value);
       const gpuSpeed = parseFloat(gpuSelect.value);
 
-      const json = Module.ccall(
-        "analyze_password_json",
-        "string",
-        ["string", "number", "number"],
-        [password, onlineSpeed, gpuSpeed]
-      );
+      try {
+        const json = Module.ccall(
+          "analyze_password_json",
+          "string",
+          ["string", "number", "number"],
+          [password, onlineSpeed, gpuSpeed]
+        );
 
-      const data = JSON.parse(json);
+        const data = JSON.parse(json);
 
-      exactEntropyEl.textContent = Number(data.entropyBits).toFixed(1);
-      result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
+        exactEntropyEl.textContent = Number(data.entropyBits).toFixed(1);
+        result.textContent = `Strength: ${data.strength} (${data.score}/100)`;
+        details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
+        onlineTime.textContent = `${data.onlineTime}`;
+        gpuTime.textContent = `${data.gpuTime}`;
+        searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
+
+        updateBar(data.score);
+        renderFlags(data);
+        renderFeedback(data.feedback);
+        
+      } catch (error) {
+        console.error("C++ Engine Error:", error);
+        result.textContent = "Strength: ENGINE ERROR";
+        details.textContent = "Press F12 to check your browser console for the exact error.";
+      }
       details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
       onlineTime.textContent = `${data.onlineTime}`;
       gpuTime.textContent = `${data.gpuTime}`;
