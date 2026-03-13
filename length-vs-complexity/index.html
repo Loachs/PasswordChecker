@@ -6,7 +6,7 @@
   <title>Length vs. Complexity | Deep Dive into Password Entropy</title>
   
   <meta name="description" content="A technical comparison of password length versus character complexity. Learn why entropy favors longer passphrases over complex short strings." />
-  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
 
   <style>
     :root {
@@ -91,6 +91,7 @@
       font-family: 'Courier New', Courier, monospace;
       margin: 30px 0;
       position: relative;
+      text-align: center;
     }
 
     .math-label {
@@ -142,8 +143,8 @@
 <body>
 
   <nav class="nav-links">
-    <a href="index.html">← Back to Checker</a>
-    <a href="password-generator/index.html">Secure Generator</a>
+    <a href="../index.html">← Back to Checker</a>
+    <a href="../password-generator/index.html">Secure Generator</a>
   </nav>
 
   <div class="content-box">
@@ -159,12 +160,15 @@
       <div class="math-label">Information Theory</div>
       $$E = L \times \log_2(R)$$
       <br>
-      Where:<br>
-      E = Entropy in bits<br>
-      L = Password Length<br>
-      R = Size of the character pool (Range)
+      <div style="text-align: left; display: inline-block;">
+        E = Entropy in bits<br>
+        L = Password Length<br>
+        R = Size of the character pool (Range)
+      </div>
     </div>
+
     
+
     <p>Notice that <strong>L (Length)</strong> is a linear multiplier. Every single character you add to a password increases its strength exponentially. Increasing <strong>R (Range)</strong>—for example, adding a single symbol—only increases the strength logarithmically. </p>
 
     <h2>Why Humans Fail at Complexity</h2>
@@ -175,6 +179,8 @@
       <li><strong>Symbols:</strong> The most common symbol used is <code>!</code>, and it is placed at the end 80% of the time.</li>
       <li><strong>Substitutions:</strong> Hackers know that you will replace 'a' with '@' or 's' with '$'. These are the first variations their cracking tools try.</li>
     </ul>
+
+    
 
     <h3>The Brute Force Reality</h3>
     <table class="comparison-table">
@@ -222,7 +228,7 @@
     </div>
 
     <div style="text-align: center; margin-top: 50px;">
-      <a href="index.html" class="btn">Test Your Current Password</a>
+      <a href="../index.html" class="btn">Test Your Current Password</a>
     </div>
   </div>
 
