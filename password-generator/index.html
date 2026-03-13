@@ -13,8 +13,8 @@
   <style>
     :root {
       --primary: #218481;
-      --bg-top: #0f0d1a;
-      --bg-bottom: #161224;
+      --bg-top: #151122;
+      --bg-bottom: #1a142c;
       --card-bg: #1f1a30;
       --input-bg: #0d0a15;
       --text-main: #f3f4f6;
@@ -27,122 +27,129 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      max-width: 720px;
+      max-width: 700px;
       margin: 20px auto 60px auto;
       padding: 20px;
-      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       background-attachment: fixed;
       color: var(--text-main);
       line-height: 1.5;
     }
 
-    /* Navigation */
-    .nav-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
+    /* --- NAVIGATION --- */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap; /* Prevent overflow on tiny screens */
+    }
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
-      padding: 8px 18px;
-      border-radius: 30px;
-      background: rgba(255,255,255,0.03);
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
       border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
-    .nav-links a.active { color: #ffffff; background: var(--primary); border-color: var(--primary); }
+    .nav-links a.active {
+      color: #ffffff;
+      background: rgba(33, 132, 129, 0.2);
+      border-color: var(--primary);
+    }
 
-    /* Layout Box */
+    /* --- LAYOUT BOXES --- */
     .box {
       background: var(--card-bg);
-      padding: 35px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-      transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      transition: box-shadow 0.2s ease-out;
     }
-    .box.flash { box-shadow: 0 0 50px rgba(33, 132, 129, 0.25); }
 
-    h1 { margin-top: 0; font-size: 24px; color: #ffffff; text-align: center; }
-    .hero { text-align: center; margin-bottom: 28px; }
-    .hero-logo { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 12px; border: 2px solid var(--border); }
+    .box.flash {
+      box-shadow: 0 0 60px rgba(33, 132, 129, 0.3);
+    }
+
+    h1 { margin-top: 0; font-size: 24px; color: #ffffff; margin-bottom: 4px; text-align: center; }
+    .hero { text-align: center; margin-bottom: 24px; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; margin-bottom: 12px; }
     
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      font-weight: bold;
-      color: var(--trust-text);
-      background: rgba(34, 197, 94, 0.1);
-      padding: 4px 12px;
-      border-radius: 20px;
-      margin-bottom: 10px;
-      border: 1px solid var(--trust-border);
-    }
-    .dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+    .trust-box { margin-top: 12px; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 13px; text-align: center; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 12px; font-weight: 600; border: 1px solid rgba(33, 132, 129, 0.3); margin: 4px; }
 
-    /* Generated Output */
-    .input-wrapper { position: relative; margin-top: 10px; }
+    /* --- INPUT & BUTTONS --- */
+    .input-wrapper { position: relative; margin-top: 24px; }
     input[type="text"] {
       width: 100%;
-      padding: 18px 90px 18px 18px;
-      font-size: 20px;
-      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      padding: 16px 85px 16px 16px; /* Space for Copy button */
+      font-size: 18px;
+      font-family: ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
       background: var(--input-bg);
       color: #4fd1c5;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       box-sizing: border-box;
       outline: none;
       text-align: center;
-      letter-spacing: 1px;
     }
     
-    .copy-btn {
+    .toggle-btn {
       position: absolute;
-      right: 12px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
-      background: var(--primary);
-      border: none;
-      color: white;
+      background: rgba(33, 132, 129, 0.2);
+      border: 1px solid var(--primary);
+      color: #4fd1c5;
       cursor: pointer;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 8px 14px;
-      border-radius: 8px;
-      transition: all 0.2s;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
-    .copy-btn:active { transform: translateY(-50%) scale(0.95); }
 
-    /* Mini Strength Meter */
-    .mini-meter { height: 4px; background: #2a233f; border-radius: 10px; margin: 12px 5px 24px 5px; overflow: hidden; }
-    .mini-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.4s ease; }
-
-    /* Controls */
-    .controls { background: rgba(0, 0, 0, 0.2); padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
-    .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .slider-label { font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-    .slider-value { font-size: 18px; font-weight: 800; color: #4fd1c5; font-family: monospace; }
+    /* --- GENERATOR CONTROLS --- */
+    .controls { background: rgba(0, 0, 0, 0.15); padding: 20px; border-radius: 10px; border: 1px solid var(--border); margin-top: 24px; }
     
-    input[type="range"] { 
-      width: 100%; margin-bottom: 25px; accent-color: var(--primary); height: 6px; cursor: pointer;
+    .slider-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 15px; 
     }
+    
+    .slider-label { font-size: 14px; color: var(--text-muted); font-weight: bold; }
+    
+    .slider-value { 
+      font-size: 18px; 
+      color: #4fd1c5; 
+      background: rgba(33, 132, 129, 0.15); 
+      padding: 4px 0; 
+      border-radius: 6px; 
+      border: 1px solid rgba(33, 132, 129, 0.3); 
+      min-width: 45px; /* FIX: Prevents squishing on iPhone */
+      text-align: center;
+    }
+    
+    input[type="range"] { width: 100%; margin-bottom: 20px; accent-color: var(--primary); cursor: pointer; }
 
     .checkbox-container {
       display: flex;
       align-items: center;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.03);
-      padding: 14px;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: 8px;
       border: 1px solid var(--border);
-      transition: 0.2s;
     }
-    .checkbox-container:hover { border-color: var(--primary); background: rgba(33, 132, 129, 0.05); }
-    .checkbox-container input { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
+    .checkbox-container input { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--primary); }
 
     .generate-btn {
       display: block;
@@ -150,31 +157,31 @@
       background: var(--primary);
       color: white;
       border: none;
-      padding: 18px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 800;
-      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: bold;
+      margin-top: 24px;
       cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: all 0.2s;
     }
-    .generate-btn:hover { background: #1a6b68; transform: translateY(-1px); box-shadow: 0 4px 15px rgba(33, 132, 129, 0.3); }
-    .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Knowledge Cards */
-    .section-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 40px 0 16px 0; text-align: center; letter-spacing: 0.1em; }
-    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 15px; padding: 20px; text-decoration: none; transition: 0.3s; }
-    .guide-card:hover { transform: translateY(-4px); border-color: var(--primary); background: rgba(33, 132, 129, 0.05); }
-    .guide-title { font-weight: 800; font-size: 15px; color: #fff; margin-bottom: 6px; }
-    .guide-hook { font-size: 12.5px; color: var(--text-muted); line-height: 1.4; }
+    /* --- GUIDES GRID --- */
+    .section-title { margin-top: 40px; margin-bottom: 16px; font-size: 12px; font-weight: bold; text-transform: uppercase; color: var(--text-muted); text-align: center; letter-spacing: 1px; }
+    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; transition: 0.2s; }
+    .guide-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .guide-icon { font-size: 22px; margin-bottom: 10px; }
+    .guide-title { font-weight: bold; font-size: 15px; color: #fff; margin-bottom: 5px; }
+    .guide-hook { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
+    /* --- IPHONE OPTIMIZATIONS --- */
     @media (max-width: 600px) {
+      body { padding: 10px; margin-bottom: 40px; }
+      .box { padding: 25px 15px; }
+      h1 { font-size: 20px; }
+      input[type="text"] { font-size: 16px; padding-right: 75px; }
       .guides-grid { grid-template-columns: 1fr; }
-      .box { padding: 25px 20px; }
-      input[type="text"] { font-size: 16px; padding-right: 80px; }
+      .nav-links a { padding: 8px 12px; font-size: 12px; }
     }
   </style>
 </head>
@@ -187,20 +194,18 @@
 
   <div class="box" id="mainBox">
     <div class="hero">
-      <div class="status-badge">
-        <div class="dot"></div>
-        <span>HARDWARE ENTROPY (CSPRNG)</span>
-      </div>
-      <br>
-      <img src="../logo.jpg" alt="Logo" class="hero-logo" />
+      <img src="../logo.jpg" alt="Free Password Checker Logo" class="hero-logo" />
       <h1>Secure Generator</h1>
+      
+      <div class="trust-box">
+        Passwords generated <strong>locally</strong> using hardware-level entropy (CSPRNG).
+      </div>
     </div>
 
     <div class="input-wrapper">
-      <input type="text" id="passwordOutput" readonly placeholder="Initializing engine..." />
-      <button class="copy-btn" id="copyBtn">COPY</button>
+      <input type="text" id="passwordOutput" readonly placeholder="Initializing..." />
+      <button class="toggle-btn" id="copyBtn">COPY</button>
     </div>
-    <div class="mini-meter"><div class="mini-fill" id="miniMeter"></div></div>
 
     <div class="controls">
       <div class="slider-header">
@@ -215,25 +220,32 @@
       </label>
     </div>
 
-    <button id="generateBtn" class="generate-btn" disabled>Loading WASM Engine...</button>
+    <button id="generateBtn" class="generate-btn" disabled>Initializing Engine...</button>
   </div>
 
   <div class="section-title">Security Knowledge Base</div>
   <div class="guides-grid">
     <a href="../length-vs-complexity/index.html" class="guide-card">
-      <div class="guide-title">📏 Length vs Complexity</div>
-      <p class="guide-hook">Why a 16-character phrase beats an 8-character "complex" password every time.</p>
+      <div class="guide-icon">📏</div>
+      <div class="guide-title">Length vs. Complexity</div>
+      <p class="guide-hook">Why a 16-character phrase is 1,000x harder for a GPU to crack than short complex strings.</p>
     </a>
+
     <a href="../data-breaches/index.html" class="guide-card">
-      <div class="guide-title">🔓 How Breaches Work</div>
-      <p class="guide-hook">Hackers don't guess; they steal. Learn why password reuse is the real danger.</p>
+      <div class="guide-icon">🔓</div>
+      <div class="guide-title">How Breaches Work</div>
+      <p class="guide-hook">Learn why hackers don't guess—they steal entire databases of reusable passwords.</p>
     </a>
+
     <a href="../password-managers/index.html" class="guide-card">
-      <div class="guide-title">🔑 Why Use a Manager?</div>
-      <p class="guide-hook">Stop memorizing everything. Learn the secure way to handle "Uncrackable" logins.</p>
+      <div class="guide-icon">🔑</div>
+      <div class="guide-title">The Manager Secret</div>
+      <p class="guide-hook">Discover the tool that makes "Uncrackable" passwords easy to handle.</p>
     </a>
+
     <a href="../safety-of-checkers/index.html" class="guide-card">
-      <div class="guide-title">🛡️ Privacy Technology</div>
+      <div class="guide-icon">🛡️</div>
+      <div class="guide-title">Is This Site Safe?</div>
       <p class="guide-hook">Technical breakdown of how WebAssembly keeps your data on your device.</p>
     </a>
   </div>
@@ -248,29 +260,17 @@
     const passwordOutput = document.getElementById('passwordOutput');
     const copyBtn = document.getElementById('copyBtn');
     const mainBox = document.getElementById('mainBox');
-    const miniMeter = document.getElementById('miniMeter');
 
     lengthSlider.addEventListener('input', (e) => {
         lengthDisplay.textContent = e.target.value;
-        updateMeter(e.target.value);
     });
-
-    function updateMeter(len) {
-        // Simple visual entropy estimation for the UI
-        let progress = (len / 64) * 100;
-        miniMeter.style.width = progress + "%";
-        if (len < 12) miniMeter.style.backgroundColor = "#ef4444";
-        else if (len < 16) miniMeter.style.backgroundColor = "#eab308";
-        else miniMeter.style.backgroundColor = "#218481";
-    }
 
     let passGenInstance = null;
 
-    // Connects to your existing passgen.js module
     createPassgenModule().then((Module) => {
         passGenInstance = new Module.PasswordGenerator();
         generateBtn.disabled = false;
-        generateBtn.textContent = "Generate Password";
+        generateBtn.textContent = "Generate New Password";
         generateNewPassword();
     });
 
@@ -285,27 +285,23 @@
 
         try {
             passwordOutput.value = passGenInstance.generate(length, exclude);
-            updateMeter(length);
             copyBtn.textContent = "COPY";
-            copyBtn.style.background = "var(--primary)";
+            copyBtn.style.background = "rgba(33, 132, 129, 0.2)";
+            copyBtn.style.color = "#4fd1c5";
         } catch (error) {
-            passwordOutput.value = "Engine Error";
+            passwordOutput.value = "Error generating.";
         }
     }
 
     generateBtn.addEventListener('click', generateNewPassword);
 
     copyBtn.addEventListener('click', () => {
-        if (!passwordOutput.value || passwordOutput.value.includes("...")) return;
+        if (!passwordOutput.value) return;
         
         navigator.clipboard.writeText(passwordOutput.value).then(() => {
             copyBtn.textContent = "COPIED!";
-            copyBtn.style.background = "#10b981"; 
-            
-            setTimeout(() => {
-                copyBtn.textContent = "COPY";
-                copyBtn.style.background = "var(--primary)";
-            }, 1500);
+            copyBtn.style.background = "#218481"; 
+            copyBtn.style.color = "white";
         });
     });
   </script>
