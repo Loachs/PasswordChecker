@@ -533,6 +533,7 @@
       const onlineSpeed = parseFloat(onlineSelect.value);
       const gpuSpeed = parseFloat(gpuSelect.value);
 
+      // --- THE SAFE TRY/CATCH BLOCK ---
       try {
         const json = Module.ccall(
           "analyze_password_json",
@@ -550,23 +551,17 @@
         gpuTime.textContent = `${data.gpuTime}`;
         searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
 
+        // ALL data-dependent functions must be inside here
         updateBar(data.score);
         renderFlags(data);
         renderFeedback(data.feedback);
-        
+
       } catch (error) {
         console.error("C++ Engine Error:", error);
         result.textContent = "Strength: ENGINE ERROR";
-        details.textContent = "Press F12 to check your browser console for the exact error.";
+        details.textContent = "Failed to load WebAssembly engine. Check console.";
+        updateBar(0);
       }
-      details.textContent = `Estimated entropy: ${data.entropyBits} bits | Dictionary coverage: ${data.dictCoverage}%`;
-      onlineTime.textContent = `${data.onlineTime}`;
-      gpuTime.textContent = `${data.gpuTime}`;
-      searchSpace.textContent = `Total combinations: ${data.searchSpace}`;
-
-      updateBar(data.score);
-      renderFlags(data);
-      renderFeedback(data.feedback);
     }
 
     let timeout;
