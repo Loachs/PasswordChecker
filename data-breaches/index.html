@@ -1,1 +1,207 @@
-stuff..
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Data Breaches Work | Protect Your Identity</title>
+  
+  <meta name="description" content="Understand how hackers steal and use passwords from major data breaches to compromise your accounts." />
+  <link rel="icon" type="image/jpeg" href="../logo.jpg" />
+
+  <style>
+    :root {
+      --primary: #218481;
+      --bg-top: #151122;
+      --bg-bottom: #1a142c;
+      --card-bg: #1f1a30;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #352d4d;
+      --accent: #ff4d4d; 
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 15px; /* Added horizontal breathing room for iPhone */
+      background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* --- NAVIGATION --- */
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0 30px 0;
+      flex-wrap: wrap; /* Wraps buttons on very small screens */
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { color: #ffffff; border-color: var(--primary); }
+
+    /* --- CONTENT BOX --- */
+    .content-box {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      word-wrap: break-word; /* Prevents long URLs from breaking layout */
+    }
+
+    h1 { font-size: 32px; color: #ffffff; margin-bottom: 10px; text-align: center; line-height: 1.2; }
+    .subtitle { text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+
+    h2 { color: #ffffff; margin-top: 35px; border-left: 4px solid var(--accent); padding-left: 15px; font-size: 22px; }
+    p { margin-bottom: 15px; }
+    
+    /* --- RESPONSIVE GRID --- */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .step-card {
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-num {
+      color: var(--accent);
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .warning-box {
+      background: rgba(255, 77, 77, 0.08);
+      border: 1px solid var(--accent);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 25px 0;
+    }
+
+    .source-links {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .source-links a {
+      color: #4fd1c5;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .btn {
+      display: block; /* Full width on mobile */
+      text-align: center;
+      background: var(--primary);
+      color: white;
+      padding: 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+
+    /* --- IPHONE & MOBILE OPTIMIZATIONS --- */
+    @media (max-width: 768px) {
+      .process-grid {
+        grid-template-columns: 1fr; /* Stacks cards vertically */
+      }
+      .content-box {
+        padding: 25px 20px; /* Reduced padding for more text room */
+      }
+      h1 { font-size: 26px; }
+      h2 { font-size: 20px; }
+      .nav-links a { padding: 8px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-links">
+    <a href="../index.html">← Checker</a>
+    <a href="../password-generator/index.html">Generator</a>
+  </nav>
+
+  <div class="content-box">
+    <h1>How Data Breaches Work</h1>
+    <p class="subtitle">The Journey of a Leaked Password</p>
+
+    <p>Modern hacking isn't a person typing at a terminal; it's an automated industry. Your data is usually stolen in bulk during a massive breach of a major service provider.</p>
+    
+    
+
+    <h2>The Lifecycle of a Leak</h2>
+    
+    <div class="process-grid">
+      <div class="step-card">
+        <span class="step-num">01. Theft</span>
+        <p>A server vulnerability allows hackers to download a database containing millions of user records, including email addresses and passwords.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">02. Decrypt</span>
+        <p>If the passwords aren't properly "salted," hackers use specialized hardware to crack the encryption, turning scrambled text back into readable passwords.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-num">03. Exploit</span>
+        <p>Bots automatically test these email/password pairs on other sites like PayPal, Netflix, and Amazon. This is known as <strong>Credential Stuffing</strong>.</p>
+      </div>
+    </div>
+
+    
+
+    <h2>The Password Reuse Risk</h2>
+    <p>Hackers rely on the fact that <strong>65% of people</strong> reuse the same password across multiple platforms. One leak at a small gaming forum could give a hacker the key to your primary email or bank account.</p>
+    
+    <div class="warning-box">
+      <strong>Important:</strong> Strength doesn't save a reused password. Even a 20-character password is useless if it has been leaked in a plaintext database from a previous breach.
+    </div>
+
+    <h2>How to Protect Yourself</h2>
+    <ul>
+      <li><strong>Never Reuse:</strong> Use our <a href="../password-generator/index.html" style="color:#4fd1c5;">Generator</a> for every new account.</li>
+      <li><strong>Use MFA/2FA:</strong> Multi-factor authentication stops hackers even if they have your password.</li>
+      <li><strong>Check Your Email:</strong> Use monitoring services to see if your data has been leaked.</li>
+    </ul>
+
+    
+
+[Image of multi-factor authentication process]
+
+
+    <div class="source-links">
+      <h3>Trusted Resources</h3>
+      <a href="https://haveibeenpwned.com/" target="_blank">→ Have I Been Pwned? (Check your email)</a>
+      <a href="https://www.cisa.gov/news-events/news/securing-our-world-using-strong-passwords" target="_blank">→ CISA: Official Govt Password Guidance</a>
+      <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">→ Verizon 2024 Data Breach Report</a>
+    </div>
+
+    <a href="../index.html" class="btn">Check Your Password Strength</a>
+  </div>
+
+</body>
+</html>
