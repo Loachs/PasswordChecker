@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Length vs. Complexity | Deep Dive into Password Entropy</title>
   
-  <meta name="description" content="A technical comparison of password length versus character complexity. Learn why entropy favors longer passphrases over complex short strings." />
+  <meta name="description" content="A technical comparison of password length versus character complexity. Learn why entropy favors longer passphrases." />
   <link rel="icon" type="image/jpeg" href="../logo.jpg" />
 
   <style>
@@ -23,27 +23,28 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       max-width: 900px;
-      margin: 20px auto 60px auto;
-      padding: 20px;
+      margin: 0 auto;
+      padding: 20px 15px;
       background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       background-attachment: fixed;
       color: var(--text-main);
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
     /* --- NAVIGATION --- */
     .nav-links {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin-bottom: 40px;
+      gap: 10px;
+      margin: 20px 0 30px 0;
+      flex-wrap: wrap;
     }
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
-      padding: 10px 20px;
+      font-size: 13px;
+      padding: 8px 16px;
       border-radius: 8px;
       background: rgba(0,0,0,0.2);
       border: 1px solid var(--border);
@@ -54,35 +55,19 @@
     /* --- CONTENT BOX --- */
     .content-box {
       background: var(--card-bg);
-      padding: 50px;
+      padding: 40px;
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     }
 
-    h1 { font-size: 36px; color: #ffffff; margin-bottom: 10px; text-align: center; }
-    .subtitle { text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; }
+    h1 { font-size: 32px; color: #ffffff; margin-bottom: 10px; text-align: center; line-height: 1.2; }
+    .subtitle { text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; }
 
-    h2 { color: #ffffff; margin-top: 40px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 24px; }
-    h3 { color: var(--accent); margin-top: 25px; font-size: 20px; }
-    p { margin-bottom: 20px; }
+    h2 { color: #ffffff; margin-top: 35px; border-left: 4px solid var(--primary); padding-left: 15px; font-size: 22px; }
+    h3 { color: var(--accent); margin-top: 25px; font-size: 18px; }
     
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 30px 0;
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      overflow: hidden;
-      font-size: 15px;
-    }
-    .comparison-table th, .comparison-table td {
-      padding: 18px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .comparison-table th { background: rgba(33, 132, 129, 0.2); color: var(--accent); }
-    
+    /* --- MATH BLOCK --- */
     .math-block {
       background: #0d0a15;
       padding: 25px;
@@ -92,18 +77,43 @@
       margin: 30px 0;
       position: relative;
       text-align: center;
+      font-size: 18px;
     }
 
     .math-label {
       position: absolute;
       top: -12px;
-      left: 20px;
+      left: 15px;
       background: var(--primary);
-      padding: 2px 12px;
-      font-size: 12px;
+      padding: 2px 10px;
+      font-size: 11px;
       border-radius: 4px;
       font-family: sans-serif;
+      text-transform: uppercase;
     }
+
+    /* --- TABLE SCROLLING FOR IPHONE --- */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin: 25px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .comparison-table {
+      width: 100%;
+      min-width: 500px; /* Ensures table doesn't squash too much */
+      border-collapse: collapse;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .comparison-table th { background: rgba(33, 132, 129, 0.2); color: var(--accent); }
 
     .source-links {
       margin-top: 40px;
@@ -114,122 +124,108 @@
       color: var(--accent);
       text-decoration: none;
       display: block;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       font-size: 14px;
     }
-    .source-links a:hover { text-decoration: underline; }
 
     .btn {
-      display: inline-block;
+      display: block;
+      text-align: center;
       background: var(--primary);
       color: white;
-      padding: 15px 30px;
+      padding: 16px;
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
-      transition: transform 0.2s;
+      margin-top: 30px;
     }
-    .btn:hover { transform: translateY(-2px); background: #1a6b68; }
 
-    code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: #ff79c6; }
-
+    /* --- MOBILE OPTIMIZATIONS --- */
     @media (max-width: 600px) {
-      .content-box { padding: 25px; }
-      h1 { font-size: 28px; }
-      .comparison-table { font-size: 13px; }
+      .content-box { padding: 25px 15px; }
+      h1 { font-size: 26px; }
+      h2 { font-size: 20px; }
+      .math-block { font-size: 16px; padding: 30px 15px 20px 15px; }
+      .math-block div { text-align: center !important; font-size: 13px; margin-top: 10px; }
     }
   </style>
 </head>
 <body>
 
   <nav class="nav-links">
-    <a href="../index.html">← Back to Checker</a>
-    <a href="../password-generator/index.html">Secure Generator</a>
+    <a href="../index.html">← Checker</a>
+    <a href="../password-generator/index.html">Generator</a>
   </nav>
 
   <div class="content-box">
     <h1>Length vs. Complexity</h1>
-    <p class="subtitle">The science of password entropy and brute-force resistance</p>
+    <p class="subtitle">The Science of Password Entropy</p>
 
-    <p>In the early days of computing, storage was expensive and processing power was limited. Security experts recommended short passwords with "special characters" to make small amounts of data harder to guess. Today, with modern GPUs capable of billions of guesses per second, that advice is not just outdated—it is dangerous.</p>
+    <p>For years, we were taught that a "strong" password had to be short and full of complex symbols. Modern math proves that <strong>length is far more powerful</strong> than character variety.</p>
 
     <h2>The Entropy Equation</h2>
-    <p>In cryptography, the strength of a password is measured in <strong>Entropy (bits)</strong>. This represents the amount of "surprise" or randomness in the string. The formula for password entropy is:</p>
+    <p>Password strength is measured in "bits of entropy." As you can see in the formula below, adding a single character to the length (L) has an exponential impact compared to just adding more character types (R).</p>
     
     <div class="math-block">
-      <div class="math-label">Information Theory</div>
-      $$E = L \times \log_2(R)$$
+      <div class="math-label">The Formula</div>
+      <strong>E = L × log₂(R)</strong>
       <br>
-      <div style="text-align: left; display: inline-block;">
-        E = Entropy in bits<br>
-        L = Password Length<br>
-        R = Size of the character pool (Range)
+      <div style="text-align: left; display: inline-block; font-family: sans-serif; margin-top: 15px;">
+        • <strong>E</strong> = Total Entropy (Strength)<br>
+        • <strong>L</strong> = Length of Password<br>
+        • <strong>R</strong> = Number of possible characters
       </div>
     </div>
 
     
 
-    <p>Notice that <strong>L (Length)</strong> is a linear multiplier. Every single character you add to a password increases its strength exponentially. Increasing <strong>R (Range)</strong>—for example, adding a single symbol—only increases the strength logarithmically. </p>
-
-    <h2>Why Humans Fail at Complexity</h2>
-    <p>When a website forces you to use a capital letter, a number, and a symbol, you don't actually become "random." You become predictable. Security researchers call these <strong>"Human Patterns."</strong></p>
+    <h2>Brute Force Reality</h2>
+    <p>Hackers use GPUs that can test billions of combinations per second. Here is how different styles of passwords hold up against a modern brute-force attack:</p>
     
-    <ul>
-      <li><strong>Capitalization:</strong> 90% of users capitalize only the first letter.</li>
-      <li><strong>Symbols:</strong> The most common symbol used is <code>!</code>, and it is placed at the end 80% of the time.</li>
-      <li><strong>Substitutions:</strong> Hackers know that you will replace 'a' with '@' or 's' with '$'. These are the first variations their cracking tools try.</li>
-    </ul>
+    <div class="table-container">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Example</th>
+            <th>Length</th>
+            <th>Crack Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Short/Complex</td>
+            <td><code>4k#L!v9</code></td>
+            <td>7</td>
+            <td><strong>Instant</strong></td>
+          </tr>
+          <tr>
+            <td>Human Pattern</td>
+            <td><code>Summer2024!</code></td>
+            <td>11</td>
+            <td><strong>< 1 Day</strong></td>
+          </tr>
+          <tr>
+            <td>Long Passphrase</td>
+            <td><code>blue-elephant-2026</code></td>
+            <td>18</td>
+            <td><strong>~40,000 Years</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    
-
-    <h3>The Brute Force Reality</h3>
-    <table class="comparison-table">
-      <thead>
-        <tr>
-          <th>Password Pattern</th>
-          <th>Character Pool (R)</th>
-          <th>Length (L)</th>
-          <th>GPU Crack Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><code>P@ssw0rd!</code></td>
-          <td>95 chars</td>
-          <td>9</td>
-          <td><strong>Instant</strong></td>
-        </tr>
-        <tr>
-          <td><code>Blue-Elephant-2026</code></td>
-          <td>62 chars</td>
-          <td>18</td>
-          <td><strong>~40,000 Years</strong></td>
-        </tr>
-        <tr>
-          <td><code>38kL#v9!</code></td>
-          <td>95 chars</td>
-          <td>8</td>
-          <td><strong>2 Minutes</strong></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>The "Passphrase" Revolution</h2>
-    <p>The modern gold standard is the <strong>Passphrase</strong>. By choosing four or five random, unrelated words, you create a string that is incredibly long (high entropy) but very easy for the human brain to visualize and remember. </p>
-    
-    <p>This method was famously popularized by the <em>XKCD "Correct Horse Battery Staple"</em> comic, which demonstrated that a 28-character simple passphrase is trillions of times harder to crack than a 10-character complex password.</p>
+    <h2>Why Passphrases Win</h2>
+    <p>A "Passphrase" uses 4-5 random words. They are incredibly long (high entropy) but much easier for the human brain to remember than a string of random gibberish like <code>j%9!Lp#2</code>.</p>
 
     <div class="source-links">
-      <h3>Credible Sources & Further Reading</h3>
-      <a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank">1. NIST Digital Identity Guidelines (Latest Draft) - The official US standard for password policy.</a>
-      <a href="https://www.enisa.europa.eu/publications/enisa-report-password-policy-guidelines" target="_blank">2. ENISA Password Policy Guidelines - European Union Agency for Cybersecurity.</a>
-      <a href="https://xkcd.com/936/" target="_blank">3. XKCD: Password Strength - The classic visual explanation of passphrases.</a>
-      <a href="https://haveibeenpwned.com/Passwords" target="_blank">4. Have I Been Pwned - Check if your password has appeared in a known data breach.</a>
+      <h3>Credible Resources</h3>
+      <a href="https://pages.nist.gov/800-63-4/sp800-63b.html" target="_blank">→ NIST: Official Password Standards</a>
+      <a href="https://xkcd.com/936/" target="_blank">→ XKCD: The "Passphrase" Explanation</a>
+      <a href="https://www.enisa.europa.eu/publications/enisa-report-password-policy-guidelines" target="_blank">→ ENISA: European Security Guidelines</a>
     </div>
 
-    <div style="text-align: center; margin-top: 50px;">
-      <a href="../index.html" class="btn">Test Your Current Password</a>
-    </div>
+    <a href="../index.html" class="btn">Test Your Password Now</a>
   </div>
 
 </body>
