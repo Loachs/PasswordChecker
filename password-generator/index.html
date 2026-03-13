@@ -40,15 +40,16 @@
     .nav-links {
       display: flex;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
       margin-bottom: 24px;
+      flex-wrap: wrap; /* Prevent overflow on tiny screens */
     }
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
-      padding: 10px 20px;
+      font-size: 13px;
+      padding: 10px 16px;
       border-radius: 8px;
       background: rgba(0,0,0,0.2);
       border: 1px solid var(--border);
@@ -59,10 +60,6 @@
       background: rgba(33, 132, 129, 0.2);
       border-color: var(--primary);
     }
-    .nav-links a:hover:not(.active) {
-      color: #ffffff;
-      border-color: #ffffff;
-    }
 
     /* --- LAYOUT BOXES --- */
     .box {
@@ -70,32 +67,28 @@
       padding: 32px;
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.4),
-        0 0 var(--glow-spread, 20px) var(--glow-color, rgba(33, 132, 129, 0.05));
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
       transition: box-shadow 0.2s ease-out;
     }
 
     .box.flash {
-      --glow-spread: 60px;
-      --glow-color: rgba(33, 132, 129, 0.3);
+      box-shadow: 0 0 60px rgba(33, 132, 129, 0.3);
     }
 
     h1 { margin-top: 0; font-size: 24px; color: #ffffff; margin-bottom: 4px; text-align: center; }
     .hero { text-align: center; margin-bottom: 24px; }
-    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); margin-bottom: 12px; }
+    .hero-logo { width: 72px; height: 72px; border-radius: 16px; object-fit: cover; margin-bottom: 12px; }
     
-    .trust-box { margin-top: 12px; max-width: 540px; margin-left: auto; margin-right: auto; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 14px; }
-    .trust-badges { display: flex; justify-content: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
-    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 13px; font-weight: 600; margin-right: 8px; margin-top: 8px; border: 1px solid rgba(33, 132, 129, 0.3); }
+    .trust-box { margin-top: 12px; background: var(--trust-bg); padding: 12px 16px; border-radius: 10px; border: 1px solid var(--trust-border); color: var(--trust-text); font-size: 13px; text-align: center; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(33, 132, 129, 0.15); color: #4fd1c5; font-size: 12px; font-weight: 600; border: 1px solid rgba(33, 132, 129, 0.3); margin: 4px; }
 
     /* --- INPUT & BUTTONS --- */
     .input-wrapper { position: relative; margin-top: 24px; }
     input[type="text"] {
       width: 100%;
-      padding: 16px 80px 16px 16px;
-      font-size: 20px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      padding: 16px 85px 16px 16px; /* Space for Copy button */
+      font-size: 18px;
+      font-family: ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
       background: var(--input-bg);
       color: #4fd1c5;
       border: 1px solid var(--border);
@@ -103,50 +96,60 @@
       box-sizing: border-box;
       outline: none;
       text-align: center;
-      letter-spacing: 1px;
     }
     
     .toggle-btn {
       position: absolute;
-      right: 12px;
+      right: 10px;
       top: 50%;
       transform: translateY(-50%);
       background: rgba(33, 132, 129, 0.2);
       border: 1px solid var(--primary);
       color: #4fd1c5;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 6px;
-      transition: all 0.2s;
     }
-    .toggle-btn:hover { background: var(--primary); color: white; }
 
     /* --- GENERATOR CONTROLS --- */
-    .controls { background: rgba(0, 0, 0, 0.15); padding: 24px; border-radius: 10px; border: 1px solid var(--border); margin-top: 24px; }
-    .slider-header { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-weight: bold; margin-bottom: 12px; font-size: 14px; }
-    .slider-value { font-size: 20px; color: #4fd1c5; background: rgba(33, 132, 129, 0.15); padding: 4px 12px; border-radius: 6px; border: 1px solid rgba(33, 132, 129, 0.3); }
+    .controls { background: rgba(0, 0, 0, 0.15); padding: 20px; border-radius: 10px; border: 1px solid var(--border); margin-top: 24px; }
     
-    input[type="range"] {
-      width: 100%;
-      margin-bottom: 24px;
-      accent-color: var(--primary);
-      cursor: pointer;
+    .slider-header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 15px; 
     }
+    
+    .slider-label { font-size: 14px; color: var(--text-muted); font-weight: bold; }
+    
+    .slider-value { 
+      font-size: 18px; 
+      color: #4fd1c5; 
+      background: rgba(33, 132, 129, 0.15); 
+      padding: 4px 0; 
+      border-radius: 6px; 
+      border: 1px solid rgba(33, 132, 129, 0.3); 
+      min-width: 45px; /* FIX: Prevents squishing on iPhone */
+      text-align: center;
+    }
+    
+    input[type="range"] { width: 100%; margin-bottom: 20px; accent-color: var(--primary); cursor: pointer; }
 
     .checkbox-container {
       display: flex;
       align-items: center;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
       background: rgba(255, 255, 255, 0.03);
       padding: 12px;
       border-radius: 8px;
       border: 1px solid var(--border);
     }
-    .checkbox-container input { margin-right: 12px; width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+    .checkbox-container input { margin-right: 10px; width: 18px; height: 18px; accent-color: var(--primary); }
 
     .generate-btn {
       display: block;
@@ -156,68 +159,29 @@
       border: none;
       padding: 16px;
       border-radius: 10px;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: bold;
       margin-top: 24px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      box-shadow: 0 4px 15px rgba(33, 132, 129, 0.3);
-    }
-    .generate-btn:hover:not(:disabled) { background: #1a6b68; transform: translateY(-1px); }
-    .generate-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 2px 5px rgba(33, 132, 129, 0.3); }
-    .generate-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
-
-    /* --- UNIFIED KNOWLEDGE BASE GRID --- */
-    .section-title {
-      margin-top: 40px;
-      margin-bottom: 16px;
-      font-size: 14px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      text-align: center;
     }
 
-    .guides-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 10px;
-    }
+    /* --- GUIDES GRID --- */
+    .section-title { margin-top: 40px; margin-bottom: 16px; font-size: 12px; font-weight: bold; text-transform: uppercase; color: var(--text-muted); text-align: center; letter-spacing: 1px; }
+    .guides-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .guide-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-decoration: none; display: flex; flex-direction: column; transition: 0.2s; }
+    .guide-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .guide-icon { font-size: 22px; margin-bottom: 10px; }
+    .guide-title { font-weight: bold; font-size: 15px; color: #fff; margin-bottom: 5px; }
+    .guide-hook { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    .guide-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      text-decoration: none;
-      color: var(--text-main);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .guide-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--primary);
-      background: rgba(33, 132, 129, 0.05);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 
-                  0 0 15px rgba(33, 132, 129, 0.2);
-    }
-
-    .guide-icon { font-size: 24px; margin-bottom: 12px; }
-    .guide-title { font-weight: 800; font-size: 16px; color: #ffffff; margin-bottom: 8px; transition: color 0.2s; }
-    .guide-card:hover .guide-title { color: #4fd1c5; }
-    .guide-hook { font-size: 13px; color: var(--text-muted); line-height: 1.4; margin: 0; }
-
+    /* --- IPHONE OPTIMIZATIONS --- */
     @media (max-width: 600px) {
-      body { margin: 0; padding: 16px; }
-      .box { padding: 24px 20px; }
-      input[type="text"] { font-size: 16px; padding: 14px 70px 14px 10px; }
+      body { padding: 10px; margin-bottom: 40px; }
+      .box { padding: 25px 15px; }
+      h1 { font-size: 20px; }
+      input[type="text"] { font-size: 16px; padding-right: 75px; }
       .guides-grid { grid-template-columns: 1fr; }
+      .nav-links a { padding: 8px 12px; font-size: 12px; }
     }
   </style>
 </head>
@@ -231,33 +195,28 @@
   <div class="box" id="mainBox">
     <div class="hero">
       <img src="../logo.jpg" alt="Free Password Checker Logo" class="hero-logo" />
-      <h1>Secure Password Generator</h1>
+      <h1>Secure Generator</h1>
       
       <div class="trust-box">
-        ⚙️ Passwords are mathematically generated <strong>directly on your device</strong> using Cryptographically Secure Pseudo-Random Number Generation (CSPRNG).
-      </div>
-      
-      <div class="trust-badges">
-        <span class="badge">Hardware Entropy</span>
-        <span class="badge">Offline Generation</span>
+        Passwords generated <strong>locally</strong> using hardware-level entropy (CSPRNG).
       </div>
     </div>
 
     <div class="input-wrapper">
-      <input type="text" id="passwordOutput" readonly placeholder="Loading generator engine..." />
+      <input type="text" id="passwordOutput" readonly placeholder="Initializing..." />
       <button class="toggle-btn" id="copyBtn">COPY</button>
     </div>
 
     <div class="controls">
       <div class="slider-header">
-        <span>Password Length</span>
+        <span class="slider-label">Password Length</span>
         <span class="slider-value" id="lengthDisplay">16</span>
       </div>
       <input type="range" id="lengthSlider" min="8" max="64" value="16">
       
       <label class="checkbox-container">
         <input type="checkbox" id="excludeAmbiguous" checked> 
-        <span>Exclude Ambiguous Characters (I, l, 1, O, 0)</span>
+        <span>Exclude Ambiguous (I, l, 1, O, 0)</span>
       </label>
     </div>
 
@@ -269,25 +228,25 @@
     <a href="../length-vs-complexity/index.html" class="guide-card">
       <div class="guide-icon">📏</div>
       <div class="guide-title">Length vs. Complexity</div>
-      <p class="guide-hook">Think 1234!@# is safe? See why a 16-character phrase is actually 1,000x harder for a GPU to crack.</p>
+      <p class="guide-hook">Why a 16-character phrase is 1,000x harder for a GPU to crack than short complex strings.</p>
     </a>
 
     <a href="../data-breaches/index.html" class="guide-card">
       <div class="guide-icon">🔓</div>
       <div class="guide-title">How Breaches Work</div>
-      <p class="guide-hook">Hackers don't guess your password; they steal the whole database. Learn why "password reuse" is your #1 risk.</p>
+      <p class="guide-hook">Learn why hackers don't guess—they steal entire databases of reusable passwords.</p>
     </a>
 
     <a href="../password-managers/index.html" class="guide-card">
       <div class="guide-icon">🔑</div>
       <div class="guide-title">The Manager Secret</div>
-      <p class="guide-hook">Stop stressing about memory. Discover the one tool that makes "Uncrackable" passwords easy to manage.</p>
+      <p class="guide-hook">Discover the tool that makes "Uncrackable" passwords easy to handle.</p>
     </a>
 
     <a href="../safety-of-checkers/index.html" class="guide-card">
       <div class="guide-icon">🛡️</div>
       <div class="guide-title">Is This Site Safe?</div>
-      <p class="guide-hook">Curious how we check your password without seeing it? Learn about the local WebAssembly tech protecting you.</p>
+      <p class="guide-hook">Technical breakdown of how WebAssembly keeps your data on your device.</p>
     </a>
   </div>
 
@@ -330,8 +289,7 @@
             copyBtn.style.background = "rgba(33, 132, 129, 0.2)";
             copyBtn.style.color = "#4fd1c5";
         } catch (error) {
-            console.error("Generator Error:", error);
-            passwordOutput.value = "Error generating password.";
+            passwordOutput.value = "Error generating.";
         }
     }
 
@@ -344,9 +302,6 @@
             copyBtn.textContent = "COPIED!";
             copyBtn.style.background = "#218481"; 
             copyBtn.style.color = "white";
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-            copyBtn.textContent = "ERROR";
         });
     });
   </script>
