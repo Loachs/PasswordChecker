@@ -24,7 +24,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       max-width: 900px;
       margin: 0 auto;
-      padding: 20px 15px; /* Added horizontal breathing room for iPhone */
+      padding: 20px 15px;
       background: linear-gradient(135deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
       background-attachment: fixed;
       color: var(--text-main);
@@ -37,7 +37,7 @@
       justify-content: center;
       gap: 10px;
       margin: 20px 0 30px 0;
-      flex-wrap: wrap; /* Wraps buttons on very small screens */
+      flex-wrap: wrap;
     }
     .nav-links a {
       color: var(--text-muted);
@@ -59,16 +59,14 @@
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-      word-wrap: break-word; /* Prevents long URLs from breaking layout */
     }
 
     h1 { font-size: 32px; color: #ffffff; margin-bottom: 10px; text-align: center; line-height: 1.2; }
-    .subtitle { text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+    .subtitle { text-align: center; color: var(--accent); font-weight: bold; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; }
 
     h2 { color: #ffffff; margin-top: 35px; border-left: 4px solid var(--accent); padding-left: 15px; font-size: 22px; }
     p { margin-bottom: 15px; }
     
-    /* --- RESPONSIVE GRID --- */
     .process-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -100,22 +98,46 @@
       margin: 25px 0;
     }
 
-    .source-links {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-    .source-links a {
-      color: #4fd1c5;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 12px;
-      font-size: 14px;
-      line-height: 1.4;
+    /* --- BOTTOM NAVIGATION GRID --- */
+    .next-steps-title {
+      margin-top: 60px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-align: center;
     }
 
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .next-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .next-card:hover {
+      background: rgba(33, 132, 129, 0.1);
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .next-emoji { font-size: 20px; display: block; margin-bottom: 8px; }
+    .next-text { color: #ffffff; font-weight: 600; font-size: 12px; display: block; line-height: 1.2; }
+
     .btn {
-      display: block; /* Full width on mobile */
+      display: block;
       text-align: center;
       background: var(--primary);
       color: white;
@@ -123,20 +145,14 @@
       border-radius: 10px;
       text-decoration: none;
       font-weight: bold;
-      margin-top: 30px;
     }
 
-    /* --- IPHONE & MOBILE OPTIMIZATIONS --- */
     @media (max-width: 768px) {
-      .process-grid {
-        grid-template-columns: 1fr; /* Stacks cards vertically */
-      }
-      .content-box {
-        padding: 25px 20px; /* Reduced padding for more text room */
-      }
+      .process-grid, .next-steps-grid { grid-template-columns: 1fr; }
+      .next-card { display: flex; align-items: center; gap: 15px; text-align: left; padding: 12px; }
+      .next-emoji { margin-bottom: 0; }
+      .content-box { padding: 25px 15px; }
       h1 { font-size: 26px; }
-      h2 { font-size: 20px; }
-      .nav-links a { padding: 8px 12px; font-size: 12px; }
     }
   </style>
 </head>
@@ -149,43 +165,43 @@
 
   <div class="content-box">
     <h1>How Data Breaches Work</h1>
-    <p class="subtitle">The Journey of a Leaked Password</p>
+    <p class="subtitle">The Lifecycle of a Stolen Password</p>
 
-    <p>Modern hacking isn't a person typing at a terminal; it's an automated industry. Your data is usually stolen in bulk during a massive breach of a major service provider.</p>
-    
+    <p>In 2025, researchers discovered a single dataset containing over <strong>16 billion login credentials</strong> leaked from across the web. Most people believe hackers "guess" their passwords, but the reality is much more automated.</p>
+
     
 
-    <h2>The Lifecycle of a Leak</h2>
+    <h2>The 3-Step Lifecycle</h2>
     
     <div class="process-grid">
       <div class="step-card">
-        <span class="step-num">01. Theft</span>
-        <p>A server vulnerability allows hackers to download a database containing millions of user records, including email addresses and passwords.</p>
+        <span class="step-num">01. The Leak</span>
+        <p>Hackers target a service's database. Even if it's a minor site you haven't used in years, your email and password can be harvested in bulk.</p>
       </div>
       <div class="step-card">
-        <span class="step-num">02. Decrypt</span>
-        <p>If the passwords aren't properly "salted," hackers use specialized hardware to crack the encryption, turning scrambled text back into readable passwords.</p>
+        <span class="step-num">02. De-Hashing</span>
+        <p>Passwords are usually "hashed" (encrypted). Hackers use massive GPU clusters to crack these back into plaintext in seconds.</p>
       </div>
       <div class="step-card">
-        <span class="step-num">03. Exploit</span>
-        <p>Bots automatically test these email/password pairs on other sites like PayPal, Netflix, and Amazon. This is known as <strong>Credential Stuffing</strong>.</p>
+        <span class="step-num">03. Stuffing</span>
+        <p>Bots automatically "stuff" your credentials into high-value sites like Amazon or Gmail to see where else you reused that password.</p>
       </div>
     </div>
 
     
 
-    <h2>The Password Reuse Risk</h2>
-    <p>Hackers rely on the fact that <strong>65% of people</strong> reuse the same password across multiple platforms. One leak at a small gaming forum could give a hacker the key to your primary email or bank account.</p>
+    <h2>The "Password Reuse" Trap</h2>
+    <p>Statistics show that over <strong>80% of users</strong> reuse the same password across multiple platforms. This turns a single minor breach into a total digital identity compromise.</p>
     
     <div class="warning-box">
-      <strong>Important:</strong> Strength doesn't save a reused password. Even a 20-character password is useless if it has been leaked in a plaintext database from a previous breach.
+      <strong>Fact:</strong> 61% of all data breaches now involve compromised credentials. Your "strength" doesn't matter if your password is already sitting in a hacker's database.
     </div>
 
     <h2>How to Protect Yourself</h2>
     <ul>
-      <li><strong>Never Reuse:</strong> Use our <a href="../password-generator/index.html" style="color:#4fd1c5;">Generator</a> for every new account.</li>
-      <li><strong>Use MFA/2FA:</strong> Multi-factor authentication stops hackers even if they have your password.</li>
-      <li><strong>Check Your Email:</strong> Use monitoring services to see if your data has been leaked.</li>
+      <li><strong>Unique Passwords:</strong> Use a different password for every site.</li>
+      <li><strong>Multi-Factor (2FA):</strong> This is your last line of defense. Even with your password, a hacker can't get in without your physical device.</li>
+      <li><strong>Monitor Leaks:</strong> Use services like <em>Have I Been Pwned</em> to stay informed.</li>
     </ul>
 
     
@@ -193,14 +209,23 @@
 [Image of multi-factor authentication process]
 
 
-    <div class="source-links">
-      <h3>Trusted Resources</h3>
-      <a href="https://haveibeenpwned.com/" target="_blank">→ Have I Been Pwned? (Check your email)</a>
-      <a href="https://www.cisa.gov/news-events/news/securing-our-world-using-strong-passwords" target="_blank">→ CISA: Official Govt Password Guidance</a>
-      <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">→ Verizon 2024 Data Breach Report</a>
+    <div class="next-steps-title">Keep Learning</div>
+    <div class="next-steps-grid">
+      <a href="../length-vs-complexity/index.html" class="next-card">
+        <span class="next-emoji">📏</span>
+        <span class="next-text">Length vs. Complexity</span>
+      </a>
+      <a href="../password-managers/index.html" class="next-card">
+        <span class="next-emoji">🔑</span>
+        <span class="next-text">Password Managers</span>
+      </a>
+      <a href="../safety-of-checkers/index.html" class="next-card">
+        <span class="next-emoji">🛡️</span>
+        <span class="next-text">Is This Site Safe?</span>
+      </a>
     </div>
 
-    <a href="../index.html" class="btn">Check Your Password Strength</a>
+    <a href="../index.html" class="btn">Test Your Password Now</a>
   </div>
 
 </body>
